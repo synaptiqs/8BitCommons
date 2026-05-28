@@ -1,0 +1,116 @@
+# 8BitCommons - Bitcoin Ordinals 8-bit NFT Collection
+# .gitignore - Tailored for pixel art, metadata, web dapp, and scripting projects
+
+# --- OS & Editor ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+*.code-workspace
+
+# --- Node / Frontend (website, tools) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+.vercel
+.turbo
+
+# --- Python (art generators, metadata scripts) ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+
+# --- Art & Creative Source (large binary files) ---
+# Uncomment/adjust when you're ready to commit finished assets
+# For very large collections, consider Git LFS (see .gitattributes)
+*.psd
+*.ai
+*.aep
+*.prproj
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.mov
+*.mp4
+*.wav
+*.aiff
+art/source/**/*.psd
+art/source/**/*.ai
+art/source/raw/
+
+# Keep small finished pixel art (PNG/GIF) by default
+# If your final spritesheets or outputs are huge, add patterns here or use LFS
+
+# --- Metadata & Generated ---
+# Usually safe to commit JSON metadata, but ignore temp outputs
+metadata/temp/
+metadata/*.tmp
+generated/
+
+# --- Logs & Local State ---
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+.cache/
+.parcel-cache/
+
+# --- OS specific dev tools ---
+.android/
+.aws/
+.gradle/
+*.keystore
+local.properties
+
+# --- Misc ---
+*.bak
+*.tmp
+*.temp
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# --- Bitcoin / Ordinals specific ---
+# ord wallet data, inscription temp files, etc.
+.ord/
+ord/
+inscriptions/temp/
+*.ord
+
+# --- Keep these tracked (remove from ignore if needed) ---
+# !art/generated/*.png
+# !metadata/*.json
