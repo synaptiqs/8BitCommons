@@ -1,0 +1,19 @@
+[mcp_servers.flopsource-fs]
+enabled = true
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\tyler\\source\\repos\\FlopSource"]
+
+[mcp_servers.flopsource-git]
+enabled = true
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-git"]
+
+[mcp_servers.flopsource-sqlite]
+enabled = true
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-sqlite"]
+
+[mcp_servers.flopsource-browser]
+enabled = true
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-puppeteer"]

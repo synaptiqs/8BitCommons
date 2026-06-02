@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- FlopSource — Mark only, Light Mode -->
+  <rect x="0" y="0" width="48" height="48" rx="11" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" stroke-opacity="0.45"/>
+  <rect x="8" y="8" width="13" height="13" rx="3" fill="#2563eb"/>
+  <rect x="25" y="8" width="13" height="13" rx="3" fill="#2563eb"/>
+  <rect x="8" y="25" width="13" height="13" rx="3" fill="#2563eb"/>
+  <rect x="25" y="25" width="13" height="13" rx="3" fill="#2563eb"/>
+</svg>

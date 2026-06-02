@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!--
+    FlopSource — Core Matrix Favicon
+    Adaptive: respects OS dark/light mode via CSS media query.
+    Use as: <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  -->
+  <style>
+    .bg   { fill: #0c1a2e; }
+    .dot  { fill: #38bdf8; }
+    @media (prefers-color-scheme: light) {
+      .bg  { fill: #eff6ff; }
+      .dot { fill: #2563eb; }
+    }
+  </style>
+
+  <!-- Container -->
+  <rect class="bg" width="32" height="32" rx="7"/>
+
+  <!-- 6-dot F mark: col×row (0-indexed) -->
+  <!-- Row 0 — top bar: all 3 active -->
+  <rect class="dot" x="4"  y="4"  width="7" height="7" rx="1.5"/>
+  <rect class="dot" x="13" y="4"  width="7" height="7" rx="1.5"/>
+  <rect class="dot" x="22" y="4"  width="7" height="7" rx="1.5"/>
+  <!-- Row 1 — mid bar: left 2 active -->
+  <rect class="dot" x="4"  y="13" width="7" height="7" rx="1.5"/>
+  <rect class="dot" x="13" y="13" width="7" height="7" rx="1.5"/>
+  <!-- Row 2 — stem only: col 0 active -->
+  <rect class="dot" x="4"  y="22" width="7" height="7" rx="1.5"/>
+</svg>

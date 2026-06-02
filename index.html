@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlopSource — AI Compute Infrastructure Directory</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="website/favicon-dark.svg">
+  <style>
+    :root { --accent: #38bdf8; }
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-200">
+  <!-- NAV -->
+  <nav class="border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
+          <svg width="28" height="28" viewBox="0 0 48 48" style="flex-shrink: 0;">
+            <rect x="0" y="0" width="48" height="48" rx="11" fill="#0c1a2e" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.55"/>
+            <rect x="8" y="8" width="13" height="13" rx="3" fill="#bfdbfe"/>
+            <rect x="25" y="8" width="13" height="13" rx="3" fill="#bfdbfe"/>
+            <rect x="8" y="25" width="13" height="13" rx="3" fill="#bfdbfe"/>
+            <rect x="25" y="25" width="13" height="13" rx="3" fill="#bfdbfe"/>
+          </svg>
+          <span class="font-semibold text-xl tracking-tight">FlopSource</span>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-4 text-sm">
+        <a href="#why" class="text-slate-400 hover:text-slate-200 transition-colors">Why this matters</a>
+        <a href="#for-providers" class="text-slate-400 hover:text-slate-200 transition-colors">For Providers</a>
+        <a href="website/flopsourcedirectory.html" 
+           class="px-5 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-sm font-medium transition-colors">
+          Browse the Directory
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs tracking-widest mb-6">
+      <i class="fa-solid fa-check text-emerald-400"></i>
+      <span class="text-slate-400">Data verified May 2026 • 29 real providers</span>
+    </div>
+
+    <h1 class="text-5xl md:text-6xl font-semibold tracking-tighter leading-none mb-6">
+      The clear way to evaluate<br>AI compute infrastructure.
+    </h1>
+    
+    <p class="max-w-2xl mx-auto text-xl text-slate-400 mb-10">
+      Enterprise teams use FlopSource to cut through vendor noise, compare real GPU clouds and bare-metal providers, and make faster, more confident infrastructure decisions.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="website/flopsourcedirectory.html" 
+         class="inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-950 font-semibold rounded-xl hover:bg-slate-100 transition-colors text-lg">
+        Open the Directory — Free
+        <i class="fa-solid fa-arrow-right ml-2"></i>
+      </a>
+      <a href="#for-providers" 
+         class="inline-flex items-center justify-center px-8 py-3.5 border border-slate-700 hover:bg-slate-900 rounded-xl transition-colors text-lg">
+        For AI Compute Providers
+      </a>
+    </div>
+
+    <div class="mt-6 text-sm text-slate-500">
+      No login required • Free to use • AI features powered by open models
+    </div>
+  </div>
+
+  <!-- TRUST / STATS -->
+  <div class="max-w-5xl mx-auto px-6 pb-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+        <div class="text-3xl font-semibold text-white">29</div>
+        <div class="text-slate-400 text-sm mt-1">Real Providers</div>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+        <div id="stat-gpus-landing" class="text-3xl font-semibold text-white">1M+</div>
+        <div class="text-slate-400 text-sm mt-1">GPUs Indexed</div>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+        <div class="text-3xl font-semibold text-white">17</div>
+        <div class="text-slate-400 text-sm mt-1">Advanced Cooling (Liquid/Immersion)</div>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+        <div class="text-3xl font-semibold text-white">28</div>
+        <div class="text-slate-400 text-sm mt-1">with Public Pricing Data</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY THIS MATTERS (Thought Leadership) -->
+  <div id="why" class="max-w-5xl mx-auto px-6 py-16 border-t border-slate-800">
+    <div class="max-w-3xl mx-auto text-center mb-12">
+      <h2 class="text-3xl font-semibold tracking-tight">Evaluating AI infrastructure is broken.</h2>
+      <p class="text-slate-400 mt-3 text-lg">Most teams are flying blind.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <h3 class="font-semibold mb-2">Vendor claims vs reality</h3>
+        <p class="text-slate-400 text-sm">Marketing pages promise 99.99% uptime and “unlimited scale.” Actual performance, pricing transparency, and delivery timelines are much harder to verify.</p>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <h3 class="font-semibold mb-2">No neutral comparison layer</h3>
+        <p class="text-slate-400 text-sm">Every provider has their own framing. There is almost no independent, structured way to compare H100/H200 capacity, liquid cooling maturity, power constraints, or real-world pricing across vendors.</p>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <h3 class="font-semibold mb-2">High cost of bad decisions</h3>
+        <p class="text-slate-400 text-sm">Choosing the wrong provider for a large training cluster or inference fleet can cost millions in lost performance, migration pain, and missed timelines.</p>
+      </div>
+    </div>
+
+    <p class="text-center text-slate-400 mt-10 max-w-2xl mx-auto">
+      FlopSource exists to make this category dramatically more transparent and comparable — without requiring you to sit through another sales deck.
+    </p>
+  </div>
+
+  <!-- FEATURES -->
+  <div id="features" class="max-w-5xl mx-auto px-6 py-16 border-t border-slate-800">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-semibold tracking-tight">Built for how serious teams actually evaluate infrastructure</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <i class="fa-solid fa-filter text-sky-400 text-xl mb-4"></i>
+        <h3 class="font-semibold mb-2">Use-Case-Aware Ranking</h3>
+        <p class="text-slate-400 text-sm">Filter the entire directory by your primary workload (Training, Inference, Fine-Tuning, Research, or Balanced). Providers are automatically ranked by how well they fit that specific use case.</p>
+      </div>
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <i class="fa-solid fa-balance-scale text-sky-400 text-xl mb-4"></i>
+        <h3 class="font-semibold mb-2">Real Comparison, Not Marketing</h3>
+        <p class="text-slate-400 text-sm">Compare up to 10 providers side-by-side with transparent data on GPUs, interconnect, cooling, jurisdiction, SLA, and pricing where available. Weighted scoring across five enterprise categories.</p>
+      </div>
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <i class="fa-solid fa-robot text-sky-400 text-xl mb-4"></i>
+        <h3 class="font-semibold mb-2">AI Consultation That Actually Helps</h3>
+        <p class="text-slate-400 text-sm">Describe your workload, scale, latency needs, budget constraints, and preferred regions. Get grounded recommendations based on the actual data in the directory.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <div class="border-t border-slate-800 py-16">
+    <div class="max-w-xl mx-auto text-center px-6">
+      <h2 class="text-2xl font-semibold mb-4">Ready to cut through the noise?</h2>
+      <a href="website/flopsourcedirectory.html" 
+         class="inline-flex items-center justify-center mt-4 px-8 py-3.5 bg-white text-slate-950 font-semibold rounded-xl hover:bg-slate-100 transition-colors text-lg">
+        Open the Directory — Free
+        <i class="fa-solid fa-arrow-right ml-2"></i>
+      </a>
+      <div class="text-xs text-slate-500 mt-6 max-w-md mx-auto">
+        No login required. Start comparing real providers in seconds. AI features are powered by open models.
+      </div>
+    </div>
+  </div>
+
+  <!-- FOR PROVIDERS / LEAD GEN + AFFILIATE PIPELINE (moved to bottom) -->
+  <div id="for-providers" class="max-w-5xl mx-auto px-6 py-16 border-t border-slate-800 bg-slate-900/50">
+    <div class="max-w-3xl mx-auto text-center mb-10">
+      <h2 class="text-3xl font-semibold tracking-tight">For AI Compute Providers</h2>
+      <p class="text-slate-400 mt-3 text-lg">Get in front of the teams that are actively evaluating infrastructure right now.</p>
+    </div>
+
+    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <h3 class="font-semibold mb-3">Get discovered by serious buyers</h3>
+        <p class="text-slate-400 text-sm mb-4">Enterprise teams are using FlopSource to shortlist providers for real workloads. Being present with accurate, up-to-date information means you show up when buyers are actually comparing options.</p>
+        <a href="mailto:hello@flopsource.com?subject=Provider%20Listing%20Inquiry" 
+           class="inline-flex items-center text-sm font-medium text-sky-400 hover:text-sky-300">
+          Request to be listed <i class="fa-solid fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <h3 class="font-semibold mb-3">Introduction &amp; lead opportunities</h3>
+        <p class="text-slate-400 text-sm mb-4">Buyers can request introductions directly through the platform. We’re building structured ways for qualified teams to connect with providers — creating a clean, high-intent pipeline.</p>
+        <div class="flex flex-col gap-2">
+          <a href="mailto:hello@flopsource.com?subject=Partnership%20%2F%20Lead%20Pipeline" 
+             class="inline-flex items-center text-sm font-medium text-sky-400 hover:text-sky-300">
+            Explore partnership options <i class="fa-solid fa-arrow-right ml-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-8 text-sm text-slate-500">
+      We’re selective about who we feature. High-quality data and responsive support matter.
+    </div>
+
+    <!-- Very subtle internal affiliate note at bottom of For Providers section -->
+    <div style="margin-top: 1.5rem; text-align: center;">
+      <a href="affiliates.html" 
+         style="font-size: 0.68rem; color: #64748b; opacity: 0.55; text-decoration: none;" 
+         title="Affiliate Programs reference">
+        Affiliate Programs
+      </a>
+    </div>
+  </div>
+
+  <footer class="text-center py-8 text-xs text-slate-500 border-t border-slate-800">
+    © 2026 FlopSource — Professional AI Compute Infrastructure Directory
+  </footer>
+
+  <script>
+    // Self-contained large number formatter for the landing page
+    function formatLargeNumber(num, decimals = 1) {
+      if (num == null || isNaN(num)) return '—';
+      const abs = Math.abs(num);
+      const sign = num < 0 ? '-' : '';
+
+      if (abs < 1000) return sign + Math.round(abs);
+
+      const units = [
+        { threshold: 1_000_000_000_000, suffix: 'T' },
+        { threshold: 1_000_000_000,     suffix: 'B' },
+        { threshold: 1_000_000,         suffix: 'M' },
+        { threshold: 1_000,             suffix: 'K' },
+      ];
+
+      for (const unit of units) {
+        if (abs >= unit.threshold) {
+          const value = abs / unit.threshold;
+          const rounded = value >= 10 
+            ? Math.round(value) 
+            : value.toFixed(decimals);
+          return sign + rounded + unit.suffix;
+        }
+      }
+      return sign + Math.round(abs);
+    }
+
+    // Load and display real GPU count from the directory data
+    (async function loadLandingStats() {
+      try {
+        const res = await fetch('../website/data/data_centers.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('Failed to load data');
+        const data = await res.json();
+        const providers = Array.isArray(data) ? data : (data.providers || []);
+        const totalGPUs = providers.reduce((sum, p) => sum + (p.total_gpus || 0), 0);
+        const el = document.getElementById('stat-gpus-landing');
+        if (el) {
+          el.textContent = formatLargeNumber(totalGPUs);
+        }
+      } catch (e) {
+        // Keep the static fallback "1M+" if fetch fails
+        console.warn('Could not load dynamic GPU count for landing page:', e);
+      }
+    })();
+  </script>
+</body>
+</html>

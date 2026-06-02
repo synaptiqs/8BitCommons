@@ -1,0 +1,121 @@
+{
+  "_comment": "manual_overrides.json — Quick human edits that take priority over scraped / manual data.",
+
+  "_usage": {
+    "field_overrides": "Add a provider's ID as a key and any Provider fields as values to override them.",
+    "_skip": "Set '_skip': true on a provider entry to exclude it from the output entirely (useful for hiding placeholder entries).",
+    "_add_providers": "Add complete provider records here to inject them into the directory without touching sources.json."
+  },
+
+  "_available_fields": {
+    "id":                     "string — stable slug (e.g. 'coreweave')",
+    "provider_name":          "string",
+    "layer_type":             "'GPU Cloud' | 'Bare-Metal' | 'Edge'",
+    "hardware_architectures": "array of strings (e.g. ['NVIDIA H100', 'NVIDIA H200'])",
+    "cooling_type":           "'Liquid' | 'Air' | 'Immersion' | 'Hybrid' | 'Unknown'",
+    "jurisdiction_zone":      "'US-Federal' | 'EU-GDPR' | 'APAC-Singapore' | 'APAC-Japan' | 'UK' | 'Canada' | 'Australia' | 'Other / Multi'",
+    "primary_location":       "string",
+    "website":                "string — must start with https://",
+    "total_gpus":             "integer or null",
+    "network_bandwidth_gbps": "integer or null",
+    "interconnect":           "string or null",
+    "sla_uptime_percent":     "float 99.0–100.0 or null",
+    "price_per_gpu_hour_usd": "float >= 0 or null",
+    "certifications":         "array of strings",
+    "availability_status":    "string (e.g. 'Immediate' or '2–4 weeks')",
+    "notes":                  "string",
+    "data_quality":           "'high' | 'medium' | 'low'",
+    "last_verified":          "YYYY-MM-DD string"
+  },
+
+  "coreweave": {
+    "website": "https://www.coreweave.com"
+  },
+  "lambda-labs": {
+    "website": "https://lambdalabs.com"
+  },
+  "crusoe": {
+    "website": "https://crusoeenergy.com"
+  },
+  "equinix-metal": {
+    "website": "https://metal.equinix.com"
+  },
+  "runpod": {
+    "website": "https://www.runpod.io"
+  },
+  "vast-ai": {
+    "website": "https://vast.ai"
+  },
+  "ovhcloud": {
+    "website": "https://www.ovhcloud.com"
+  },
+  "nebius": {
+    "website": "https://nebius.com"
+  },
+  "akamai": {
+    "website": "https://www.akamai.com/products/connected-cloud"
+  },
+  "gcore": {
+    "website": "https://gcore.com"
+  },
+  "hetzner": {
+    "website": "https://www.hetzner.com"
+  },
+  "scaleway": {
+    "website": "https://www.scaleway.com"
+  },
+  "ionos": {
+    "website": "https://www.ionos.com"
+  },
+  "tensordock": {
+    "website": "https://tensordock.com"
+  },
+  "salad": {
+    "website": "https://salad.com"
+  },
+  "fluidstack": {
+    "website": "https://www.fluidstack.io"
+  },
+  "shadeform": {
+    "website": "https://www.shadeform.ai"
+  },
+  "aws": {
+    "website": "https://aws.amazon.com"
+  },
+  "azure": {
+    "website": "https://azure.microsoft.com"
+  },
+  "google-cloud": {
+    "website": "https://cloud.google.com"
+  },
+  "oracle-cloud": {
+    "website": "https://www.oracle.com/cloud"
+  },
+  "massed-compute": {
+    "website": "https://massedcompute.com"
+  },
+  "hyperbolic": {
+    "website": "https://hyperbolic.xyz"
+  },
+  "voltage-park": {
+    "website": "https://www.voltagepark.com"
+  },
+  "vultr": {
+    "website": "https://www.vultr.com"
+  },
+  "phoenixnap": {
+    "website": "https://phoenixnap.com"
+  },
+  "hivelocity": {
+    "website": "https://www.hivelocity.net"
+  },
+  "cudo-compute": {
+    "website": "https://www.cudocompute.com"
+  },
+  "together-ai": {
+    "website": "https://www.together.ai"
+  },
+
+  "_add_providers": [
+  ]
+}

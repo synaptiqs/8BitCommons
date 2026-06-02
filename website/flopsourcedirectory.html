@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlopSource • AI Compute Infrastructure Directory</title>
+  <meta name="description" content="Enterprise B2B directory for AI compute providers — GPU clouds, bare-metal, and edge nodes. Filter by hardware, cooling, jurisdiction, and availability.">
+
+  <!-- Favicon (inline SVG to avoid 404s) -->
+  <!-- Favicons -->
+  <link rel="icon" href="favicon-dark.svg" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="favicon-light.svg" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="favicon-dark.svg"> <!-- Fallback -->
+
+  <!-- FlopSource Brand System -->
+  <link rel="stylesheet" href="flopsource-brand.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root {
+      --bg-base:            #eef2f8;
+      --bg-surface:         #f5f7fc;
+      --bg-card:            #ffffff;
+      --bg-card-hover:      #fafbfe;
+      --bg-inner:           rgba(15, 23, 42, 0.04);
+      --border:             rgba(15, 23, 42, 0.08);
+      --border-md:          rgba(15, 23, 42, 0.13);
+      --border-strong:      rgba(15, 23, 42, 0.22);
+      --accent:             #2563eb;
+      --accent-dim:         #1d4ed8;
+      --accent-glow:        rgba(37, 99, 235, 0.10);
+      --accent-glow-strong: rgba(37, 99, 235, 0.20);
+      --text-primary:       #0f172a;
+      --text-secondary:     #64748b;
+      --text-muted:         #94a3b8;
+      --cloud-color: #2563eb; --cloud-bg: rgba(37,99,235,0.07);  --cloud-border: rgba(37,99,235,0.2);
+      --bare-color:  #7c3aed; --bare-bg:  rgba(124,58,237,0.07); --bare-border:  rgba(124,58,237,0.2);
+      --edge-color:  #b45309; --edge-bg:  rgba(180,83,9,0.07);   --edge-border:  rgba(180,83,9,0.2);
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    html { color-scheme: light; }
+    body { background: var(--bg-base); color: var(--text-primary); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    /* ── Ambient BG ──────────────────────────────────── */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(15,23,42,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15,23,42,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .bg-glow {
+      position: fixed; top: -280px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 520px; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse, rgba(37,99,235,0.07) 0%, transparent 68%);
+    }
+    .z1 { position: relative; z-index: 1; }
+
+    /* ── Header ──────────────────────────────────────── */
+    .app-header {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-mark {
+      width: 34px; height: 34px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 24px var(--accent-glow-strong);
+    }
+
+    /* Logo as theme toggle button */
+    .logo-toggle {
+      background: transparent;
+      border: none;
+      padding: 6px 12px;
+      margin: -6px -12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.1s ease, background 0.15s ease;
+      text-align: left;
+    }
+    .logo-toggle:hover {
+      background: var(--accent-glow);
+      transform: translateY(-1px);
+    }
+    .logo-toggle:active { transform: translateY(0); }
+    .logo-toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .logo-wordmark { font-size: 1rem; font-weight: 700; letter-spacing: -0.025em; color: var(--text-primary); line-height: 1; }
+    .logo-sub { font-size: 0.575rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-top: 2px; line-height: 1; }
+
+    /* Theme-aware logos */
+    .logo-light { display: none; }
+    .logo-dark { display: block; }
+
+    html.dark .logo-light { display: block; }
+    html.dark .logo-dark { display: none; }
+
+    .logo-dark svg,
+    .logo-light svg {
+      display: block;
+    }
+
+    .theme-tag {
+      font-size: 0.32rem; /* ~half the size of .logo-sub (0.575rem) */
+      padding: 1px 5px;
+      border-radius: 3px;
+      background: var(--border-md);
+      color: var(--text-secondary);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      line-height: 1;
+      align-self: center;
+    }
+
+    html.dark .theme-tag {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94a3b8;
+    }
+
+    /* Light/Dark text toggle between search and sort */
+    .theme-text-toggle {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      background: rgba(148, 163, 184, 0.1);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-md);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .theme-text-toggle:hover {
+      background: var(--accent-glow);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    html.dark .theme-text-toggle {
+      background: rgba(148, 163, 184, 0.12);
+      color: #cbd5e1;
+    }
+
+    /* ── Search ──────────────────────────────────────── */
+    .search-wrap { position: relative; }
+    .search-input {
+      width: 320px; background: rgba(15,23,42,0.05); border: 1px solid var(--border-md);
+      color: var(--text-primary); border-radius: 12px; padding: 7px 14px 7px 36px;
+      font-size: 0.82rem; outline: none; transition: all 0.2s ease;
+    }
+    .search-input::placeholder { color: var(--text-secondary); }
+    .search-input:focus { border-color: var(--accent-dim); background: rgba(15,23,42,0.06); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 0.72rem; pointer-events: none; }
+
+    .sort-select { background: rgba(15,23,42,0.04); border: 1px solid var(--border-md); color: var(--text-secondary); border-radius: 8px; padding: 5px 10px; font-size: 0.72rem; cursor: pointer; outline: none; font-family: inherit; transition: all 0.15s; }
+    .sort-select:focus { border-color: var(--accent-dim); color: var(--text-primary); }
+    .sort-select option { background: #ffffff; color: var(--text-primary); }
+
+    /* ── Stats bar ───────────────────────────────────── */
+    .stats-bar { background: var(--bg-surface); border-bottom: 1px solid var(--border); }
+    .stat-card { background: rgba(15,23,42,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 9px 16px; min-width: 72px; }
+    .stat-value { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .stat-label { font-size: 0.6rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); margin-top: 3px; }
+
+    /* ── Sidebar ─────────────────────────────────────── */
+    .sidebar-panel { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+    .filter-group-title { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); margin-bottom: 10px; }
+    .filter-divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+
+    /* ── Filter pills ────────────────────────────────── */
+    .f-pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 500; cursor: pointer; user-select: none; border: 1px solid var(--border-md); background: rgba(15,23,42,0.03); color: var(--text-secondary); transition: all 0.15s ease; white-space: nowrap; font-family: inherit; }
+    .f-pill:hover { border-color: var(--border-strong); color: var(--text-primary); background: rgba(15,23,42,0.07); }
+    .f-pill.selected { background: var(--accent-glow); border-color: rgba(37,99,235,0.35); color: var(--accent); }
+    .f-pill .pcount { font-size: 0.58rem; opacity: 0.6; }
+    .f-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    /* ── Active filter chip ──────────────────────────── */
+    .active-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 0.68rem; font-weight: 500; padding: 3px 4px 3px 10px; border-radius: 20px; background: var(--accent-glow); border: 1px solid rgba(37,99,235,0.25); color: var(--accent); }
+    .active-chip-x { width: 18px; height: 18px; background: rgba(37,99,235,0.12); border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 0.55rem; transition: background 0.15s; font-family: inherit; }
+    .active-chip-x:hover { background: rgba(37,99,235,0.28); }
+
+    /* ── Provider card ───────────────────────────────── */
+    @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .provider-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease; animation: cardIn 0.35s ease both; padding: 18px 18px 16px 22px; box-shadow: 0 1px 4px rgba(15,23,42,0.06); }
+    .provider-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: 0 0 0 4px var(--accent-glow), 0 1px 4px rgba(15,23,42,0.06); }
+    .provider-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+    .card-cloud::before { background: linear-gradient(to bottom, var(--cloud-color), rgba(37,99,235,0.2)); }
+    .card-bare::before  { background: linear-gradient(to bottom, var(--bare-color),  rgba(124,58,237,0.2)); }
+    .card-edge::before  { background: linear-gradient(to bottom, var(--edge-color),  rgba(180,83,9,0.2)); }
+    .provider-card:hover { background: var(--bg-card-hover); border-color: rgba(15,23,42,0.15); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(15,23,42,0.12), 0 0 0 1px rgba(15,23,42,0.05); }
+    .card-name { font-size: 0.98rem; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; line-height: 1.2; transition: color 0.15s; }
+    .provider-card:hover .card-name { color: var(--accent); }
+    .card-location { font-size: 0.7rem; color: var(--text-secondary); margin-top: 2px; }
+    .hw-chip { display: inline-block; font-size: 0.6rem; font-weight: 500; padding: 2px 7px; border-radius: 4px; background: rgba(15,23,42,0.05); border: 1px solid var(--border-md); color: var(--text-secondary); }
+    .card-metric-val { font-size: 1rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .card-metric-lbl { font-size: 0.56rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); margin-top: 3px; }
+
+    .avail-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 0.65rem; font-weight: 500; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+    .avail-now  { color: var(--accent);     background: var(--accent-glow); border: 1px solid rgba(37,99,235,0.2); }
+    .avail-wait { color: var(--edge-color); background: var(--edge-bg);     border: 1px solid var(--edge-border); }
+
+    .layer-badge { font-size: 0.62rem; font-weight: 600; padding: 3px 9px; border-radius: 6px; letter-spacing: 0.01em; }
+    .badge-cloud { color: var(--cloud-color); background: var(--cloud-bg); border: 1px solid var(--cloud-border); }
+    .badge-bare  { color: var(--bare-color);  background: var(--bare-bg);  border: 1px solid var(--bare-border); }
+    .badge-edge  { color: var(--edge-color);  background: var(--edge-bg);  border: 1px solid var(--edge-border); }
+
+    .qdot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .q-high { background: var(--accent); } .q-medium { background: var(--edge-color); } .q-low { background: var(--text-secondary); }
+
+    /* ── Buttons ─────────────────────────────────────── */
+    .btn-primary { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%); color: #ffffff; font-weight: 600; border-radius: 9px; border: none; cursor: pointer; padding: 8px 18px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; font-family: inherit; }
+    .btn-primary:hover { box-shadow: 0 0 22px var(--accent-glow-strong); transform: translateY(-1px); }
+    .btn-ghost { background: rgba(15,23,42,0.04); color: var(--text-secondary); font-weight: 500; border-radius: 9px; cursor: pointer; padding: 7px 15px; font-size: 0.8rem; border: 1px solid var(--border-md); display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s ease; font-family: inherit; }
+    .btn-ghost:hover { background: rgba(15,23,42,0.08); color: var(--text-primary); }
+    .btn-icon { background: rgba(15,23,42,0.04); border: 1px solid var(--border-md); color: var(--text-secondary); border-radius: 8px; cursor: pointer; padding: 5px 10px; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 5px; transition: all 0.15s; font-family: inherit; }
+    .btn-icon:hover { background: rgba(15,23,42,0.08); color: var(--text-primary); }
+
+    /* ── Modal ───────────────────────────────────────── */
+    .modal-overlay { background: rgba(15,23,42,0.45); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .modal-panel { background: var(--bg-surface); border: 1px solid var(--border-md); border-radius: 18px; width: 100%; max-width: 660px; max-height: 88vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(15,23,42,0.15) transparent; }
+    .modal-panel::-webkit-scrollbar { width: 5px; }
+    .modal-panel::-webkit-scrollbar-thumb { background: rgba(15,23,42,0.15); border-radius: 3px; }
+    .modal-header { padding: 20px 24px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+    .modal-close-btn { flex-shrink: 0; width: 30px; height: 30px; background: rgba(15,23,42,0.05); border: 1px solid var(--border-md); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); font-size: 0.8rem; transition: all 0.15s; font-family: inherit; }
+    .modal-close-btn:hover { background: rgba(15,23,42,0.1); color: var(--text-primary); }
+    .modal-metric-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin: 16px 0; }
+    .modal-metric { background: var(--bg-inner); border: 1px solid var(--border); border-radius: 10px; padding: 12px 8px; text-align: center; }
+    .modal-metric-val { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .modal-metric-lbl { font-size: 0.58rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); margin-top: 4px; }
+    .modal-section-title { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-secondary); margin-bottom: 10px; }
+    .infra-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.8rem; }
+    .infra-row:last-child { border-bottom: none; }
+    .infra-key { color: var(--text-secondary); }
+    .infra-val { color: var(--text-primary); font-weight: 500; text-align: right; max-width: 280px; }
+    .cert-badge { font-size: 0.66rem; font-weight: 500; padding: 4px 10px; border-radius: 6px; background: rgba(15,23,42,0.04); border: 1px solid var(--border-md); color: var(--text-secondary); }
+
+    .empty-box { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 18px; padding: 64px 24px; text-align: center; }
+    .empty-icon { width: 52px; height: 52px; background: rgba(15,23,42,0.04); border: 1px solid var(--border-md); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(15,23,42,0.12); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(15,23,42,0.2); }
+
+    /* ═══════════════════════════════════════════════════════════════
+       DARK BENTO THEME (approved look from temp-dark-bento-preview)
+       Activated by <html class="dark"> — toggled via logo button
+    ═══════════════════════════════════════════════════════════════ */
+    html.dark {
+      /* Dark Bento CSS variables — override light corporate palette */
+      --bg-base:            #0f172a;
+      --bg-surface:         #1e293b;
+      --bg-card:            #1e293b;
+      --bg-card-hover:      #334155;
+      --bg-inner:           #0b1120;
+      --border:             #334155;
+      --border-md:          #475569;
+      --border-strong:      #64748b;
+      --border-hover:       #475569;
+      --accent:             #38bdf8;
+      --accent-dim:         #0284c7;
+      --accent-glow:        rgba(56, 189, 248, 0.15);
+      --accent-glow-strong: rgba(56, 189, 248, 0.30);
+      --text-primary:       #f8fafc;
+      --text-secondary:     #94a3b8;
+      --text-muted:         #64748b;
+
+      /* Layer type badge colors (dark) */
+      --cloud-color: #38bdf8; --cloud-bg: rgba(56,189,248,0.10); --cloud-border: rgba(56,189,248,0.22);
+      --bare-color:  #a78bfa; --bare-bg:  rgba(167,139,250,0.10); --bare-border:  rgba(167,139,250,0.22);
+      --edge-color:  #34d399; --edge-bg:  rgba(52,211,153,0.10);  --edge-border:  rgba(52,211,153,0.22);
+    }
+
+    html.dark { color-scheme: dark; }
+    html.dark body { background: var(--bg-base); color: var(--text-primary); }
+
+    /* Ambient background grid/glow tuned for dark */
+    html.dark .bg-grid {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    }
+    html.dark .bg-glow {
+      background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 68%);
+    }
+
+    /* Header */
+    html.dark .app-header {
+      background: rgba(15, 23, 42, 0.88);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+    }
+
+    html.dark .logo-wordmark { color: var(--text-primary); }
+    html.dark .logo-sub { color: var(--text-secondary); }
+
+    /* Stats bar */
+    html.dark .stats-bar { background: var(--bg-surface); border-bottom-color: var(--border); }
+    html.dark .stat-card { background: var(--bg-inner); border-color: var(--border); }
+
+    /* Sidebar */
+    html.dark .sidebar-panel { background: var(--bg-surface); border-color: var(--border); }
+    html.dark .filter-group-title { color: var(--text-secondary); }
+    html.dark .filter-divider { border-color: var(--border); }
+
+    /* Filter pills */
+    html.dark .f-pill {
+      background: var(--bg-surface); border-color: var(--border); color: var(--text-secondary);
+    }
+    html.dark .f-pill:hover { background: var(--bg-inner); border-color: var(--border-hover); color: var(--text-primary); }
+    html.dark .f-pill.selected { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+    html.dark .f-pill:focus-visible { outline-color: var(--accent); }
+    html.dark .provider-card:focus-visible { outline-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow), 0 2px 8px rgba(0,0,0,0.25); }
+
+    /* Active filter chips */
+    html.dark .active-chip { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+    html.dark .active-chip-x { background: rgba(56,189,248,0.18); color: var(--accent); }
+    html.dark .active-chip-x:hover { background: rgba(56,189,248,0.35); }
+
+    /* Provider cards (bento style) */
+    html.dark .provider-card {
+      background: var(--bg-surface);
+      border-color: var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    html.dark .provider-card:hover {
+      background: var(--bg-card-hover);
+      border-color: #475569;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    }
+    html.dark .card-name { color: var(--text-primary); }
+    html.dark .provider-card:hover .card-name { color: var(--accent); }
+    html.dark .card-location { color: var(--text-secondary); }
+    html.dark .hw-chip { background: var(--bg-inner); border-color: var(--border); color: var(--text-secondary); }
+
+    /* Buttons */
+    html.dark .btn-ghost {
+      background: var(--bg-inner); color: var(--text-secondary); border-color: var(--border-md);
+    }
+    html.dark .btn-ghost:hover { background: var(--bg-surface); color: var(--text-primary); }
+
+    /* Search */
+    html.dark .search-input {
+      background: var(--bg-inner); border-color: var(--border);
+      color: var(--text-primary);
+    }
+    html.dark .search-input::placeholder { color: var(--text-muted); }
+    html.dark .search-input:focus {
+      border-color: var(--accent);
+      background: var(--bg-surface);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    html.dark .search-icon { color: var(--text-secondary); }
+
+    /* Sort select */
+    html.dark .sort-select {
+      background: var(--bg-inner); border-color: var(--border); color: var(--text-secondary);
+    }
+    html.dark .sort-select:focus { border-color: var(--accent); color: var(--text-primary); }
+    html.dark .sort-select option { background: var(--bg-surface); color: var(--text-primary); }
+
+    /* Modal (dark bento) */
+    html.dark .modal-overlay { background: rgba(15,23,42,0.78); backdrop-filter: blur(12px); }
+    html.dark .modal-panel { background: var(--bg-surface); border-color: var(--border-md); }
+    html.dark .modal-header { border-bottom-color: var(--border); }
+    html.dark .modal-close-btn {
+      background: rgba(15,23,42,0.4); border-color: var(--border-md); color: var(--text-secondary);
+    }
+    html.dark .modal-close-btn:hover { background: rgba(15,23,42,0.6); color: var(--text-primary); }
+
+    /* Empty state */
+    html.dark .empty-box { background: var(--bg-surface); border-color: var(--border); }
+    html.dark .empty-icon { background: var(--bg-inner); border-color: var(--border-md); }
+
+    /* Footer */
+    html.dark footer { border-top-color: var(--border); }
+
+    /* Header provider count pill — force dark accent when in dark mode */
+    html.dark #provider-count-header {
+      background: var(--accent-glow) !important;
+      border-color: rgba(56,189,248,0.25) !important;
+      color: var(--accent) !important;
+    }
+
+    /* Comparison tray dark base (JS also branches for full palette) */
+    html.dark #comparison-tray {
+      background: var(--bg-surface) !important;
+      border-color: var(--accent) !important;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.55) !important;
+      color: var(--text-primary) !important;
+    }
+
+    /* Use-case selector buttons inside comparison modal (theme aware) */
+    .use-case-btn {
+      padding: 4px 12px;
+      font-size: 0.72rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.1s ease;
+      font-family: inherit;
+    }
+    .use-case-btn.active {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  </style>
+
+  <!-- Early theme bootstrap (must run before first paint to avoid flash) -->
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('flopsource-theme');
+        if (saved === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- HEADER -->
+  <header class="app-header sticky top-0 z-50 z1">
+    <div class="max-w-7xl mx-auto px-6 h-[60px] flex items-center justify-between gap-4">
+      <!-- Logo as home link to marketing landing page at project root -->
+      <div id="logo-home-link" class="flex items-center gap-2 flex-shrink-0" 
+           title="Back to FlopSource landing page" 
+           aria-label="Go to FlopSource home / landing page"
+           style="cursor: pointer;">
+        <div id="nav-logo"></div>
+      </div>
+
+      <div class="search-wrap hidden md:block">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="global-search" class="search-input" placeholder="Search providers, locations…">
+      </div>
+
+      <!-- Light/Dark theme toggle (text) -->
+      <span id="theme-toggle" class="theme-text-toggle hidden md:inline-flex items-center" title="Toggle between Light and Dark theme">
+        Light/Dark
+      </span>
+
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <div class="hidden md:flex items-center gap-1.5">
+          <span style="font-size:0.68rem; color:var(--text-secondary);">Sort</span>
+          <select id="sort-select" class="sort-select">
+            <option value="name-asc">Name A–Z</option>
+            <option value="gpus-desc">Most GPUs</option>
+            <option value="price-asc">Lowest Price</option>
+            <option value="verified-desc">Recently Verified</option>
+          </select>
+        </div>
+        <div style="background:var(--accent-glow); border:1px solid var(--accent); border-color:var(--accent); padding:3px 11px; border-radius:20px; font-size:0.66rem; font-weight:600; white-space:nowrap; color:var(--accent);">
+          <span id="provider-count-header">— providers</span>
+        </div>
+        <button id="reset-button" class="btn-icon">
+          <i class="fa-solid fa-rotate-right" style="font-size:0.65rem;"></i>
+          <span class="hidden sm:inline">Reset</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar z1">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center gap-3 overflow-x-auto">
+      <div class="stat-card flex-shrink-0"><div class="stat-value" id="stat-providers">—</div><div class="stat-label">Providers</div></div>
+      <div class="stat-card flex-shrink-0"><div class="stat-value" id="stat-gpus">—</div><div class="stat-label">Total GPUs</div></div>
+      <div class="stat-card flex-shrink-0"><div class="stat-value" id="stat-cloud">—</div><div class="stat-label">GPU Clouds</div></div>
+      <div class="stat-card flex-shrink-0"><div class="stat-value" id="stat-baremetal">—</div><div class="stat-label">Bare-Metal</div></div>
+      <div class="stat-card flex-shrink-0"><div class="stat-value" id="stat-edge">—</div><div class="stat-label">Edge Nodes</div></div>
+      <div class="ml-auto flex-shrink-0 hidden lg:flex items-center gap-2" style="font-size:0.68rem; color:var(--text-secondary);">
+        <i class="fa-regular fa-circle-check" style="color:var(--accent); font-size:0.6rem;"></i>
+        Verified May 2026
+        <span style="color:var(--text-muted);">·</span>
+        <span id="refresh-data-link" style="color:var(--accent); cursor:pointer; font-weight:500;" class="hover:underline">Refresh data</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="max-w-7xl mx-auto px-6 py-8 z1">
+    <div class="mb-7">
+      <h1 style="font-size:1.65rem; font-weight:700; letter-spacing:-0.03em; color:var(--text-primary); line-height:1.2;">AI Compute Infrastructure Directory</h1>
+      <p style="margin-top:7px; font-size:0.875rem; color:var(--text-secondary); max-width:520px; line-height:1.65;">Enterprise GPU clouds, bare-metal facilities, and edge nodes. Filter by hardware architecture, cooling technology, and regulatory jurisdiction.</p>
+    </div>
+
+    <div class="flex gap-6">
+
+      <!-- SIDEBAR -->
+      <aside style="width:208px; flex-shrink:0;">
+        <div style="position:sticky; top:72px;">
+          <div class="flex items-center justify-between mb-3" style="padding:0 2px;">
+            <div style="font-size:0.73rem; font-weight:600; color:var(--text-primary); display:flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-sliders" style="color:var(--accent); font-size:0.62rem;"></i>
+              Filters
+            </div>
+            <button id="clear-filters" class="btn-icon" style="padding:3px 8px; font-size:0.65rem;">
+              <i class="fa-solid fa-times"></i> Clear
+            </button>
+          </div>
+          <div id="active-filters-summary" class="mb-3" style="min-height:24px;"></div>
+          <div class="sidebar-panel" style="max-height:72vh; overflow-y:auto;">
+            <!-- Use Case Filter (sorts results by Best In Class score) -->
+            <div>
+              <div class="filter-group-title" style="display:flex; align-items:center; gap:6px;">
+                Use Case
+                <span style="font-size:0.58rem; background:var(--accent-glow); color:var(--accent); padding:0 5px; border-radius:3px; font-weight:600;">Sorts by Best In Class</span>
+              </div>
+              <div id="filter-primary-use-case" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <hr class="filter-divider">
+
+            <div>
+              <div class="filter-group-title">Layer Type</div>
+              <div id="filter-layer-type" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <hr class="filter-divider">
+            <div>
+              <div class="filter-group-title">Hardware</div>
+              <div id="filter-hardware" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <hr class="filter-divider">
+            <div>
+              <div class="filter-group-title">Cooling</div>
+              <div id="filter-cooling" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <hr class="filter-divider">
+            <div>
+              <div class="filter-group-title">Jurisdiction</div>
+              <div id="filter-jurisdiction" class="flex flex-wrap gap-1.5"></div>
+            </div>
+
+          <div style="margin-top:10px; font-size:0.6rem; color:var(--text-muted); padding:0 2px; line-height:1.5;">Filters apply instantly. Data is client-side.</div>
+        </div>
+      </aside>
+
+      <!-- RESULTS -->
+      <main class="flex-1 min-w-0">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-baseline gap-2">
+            <span id="results-count" style="font-size:1.5rem; font-weight:700; color:var(--text-primary); font-variant-numeric:tabular-nums;">—</span>
+            <span style="font-size:0.85rem; color:var(--text-secondary);">providers match</span>
+          </div>
+          <div class="hidden md:flex items-center gap-1.5" style="font-size:0.7rem; color:var(--text-secondary);">
+            <i class="fa-regular fa-hand-pointer" style="opacity:0.45; font-size:0.65rem;"></i>
+            Click a card for full specs
+          </div>
+        </div>
+
+        <!-- Comparison hint -->
+        <div style="margin-bottom:14px; font-size:0.71rem; color:var(--accent); display:flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-columns"></i>
+          <span>Click <strong>Compare</strong> on cards to build a selection (up to 10). A movable floating panel appears when you have 2+ selected.</span>
+        </div>
+
+        <div id="results-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+
+        <div id="empty-state" class="hidden mt-10">
+          <div class="empty-box">
+            <div class="empty-icon"><i class="fa-solid fa-filter-circle-xmark" style="color:var(--text-secondary); font-size:1.15rem;"></i></div>
+            <h3 style="font-weight:600; font-size:1rem; color:var(--text-primary);">No providers match</h3>
+            <p id="empty-state-hint" style="color:var(--text-secondary); margin-top:5px; font-size:0.84rem; max-width:320px; margin-left:auto; margin-right:auto; line-height:1.55;">
+              Try broadening your filters or clearing the search.
+            </p>
+            <div id="empty-state-suggestions" style="margin-top:14px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center;"></div>
+            <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:18px;">
+              <button id="empty-clear-search" type="button" class="btn-ghost" aria-label="Clear search" style="display:none;">
+                <i class="fa-solid fa-times" style="font-size:0.68rem;"></i> Clear search
+              </button>
+              <button id="empty-clear-filters" type="button" class="btn-ghost" aria-label="Clear all filters">
+                <i class="fa-solid fa-undo" style="font-size:0.68rem;"></i> Clear all filters
+              </button>
+            </div>
+            <p style="color:var(--text-muted); margin-top:14px; font-size:0.72rem;">
+              Tip: press <kbd style="background:var(--bg-inner);border:1px solid var(--border-md);border-radius:4px;padding:1px 5px;font-size:0.68rem;">/</kbd> to search, or use the sidebar to filter by hardware or jurisdiction.
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 modal-overlay">
+    <div id="modal-backdrop" class="absolute inset-0"></div>
+    <div class="modal-panel relative">
+      <div class="modal-header">
+        <div>
+          <div id="modal-provider-name" style="font-size:1.3rem; font-weight:700; letter-spacing:-0.02em; color:var(--text-primary);"></div>
+          <div id="modal-provider-location" style="font-size:0.76rem; color:var(--text-secondary); margin-top:3px;"></div>
+        </div>
+        <button id="modal-close-x" class="modal-close-btn"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div id="modal-body" style="padding:20px 24px;"></div>
+      <div style="padding:14px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px; background:rgba(15,23,42,0.02); border-radius:0 0 18px 18px;">
+        <button id="modal-close-btn" class="btn-ghost">Close</button>
+        <button id="modal-request-btn" class="btn-primary">
+          <i class="fa-solid fa-paper-plane" style="font-size:0.72rem;"></i> Request Intro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="z1" style="margin-top:64px; border-top:1px solid var(--border); padding:20px 0; text-align:center;">
+    <div style="font-size:0.68rem; color:var(--text-muted); margin-bottom:8px;">
+      FlopSource &nbsp;·&nbsp; AI Compute Infrastructure Directory &nbsp;·&nbsp; Data as of May 2026
+    </div>
+
+    <!-- AI Analysis note (backend-powered, no user keys required) -->
+    <div style="font-size:0.65rem; color:var(--text-secondary);">
+      AI-powered insights use open-source models via our service
+    </div>
+  </footer>
+
+  <!-- Floating Feedback Button -->
+  <button id="feedback-fab" 
+          style="position:fixed; bottom:24px; left:24px; z-index:500; background:#0f172a; color:white; border:1px solid #334155; padding:10px 16px; border-radius:999px; font-size:0.85rem; display:flex; align-items:center; gap:8px; box-shadow:0 10px 30px rgba(0,0,0,0.3); cursor:pointer;">
+    <i class="fa-solid fa-comment-dots"></i>
+    <span>Feedback</span>
+  </button>
+
+  <!-- Feedback Modal -->
+  <div id="feedback-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.7); z-index:600; align-items:center; justify-content:center;">
+    <div style="background:#0f172a; border:1px solid #334155; border-radius:16px; width:100%; max-width:420px; margin:20px; padding:24px;">
+      <h3 style="margin:0 0 12px; font-size:1.1rem;">Help us improve FlopSource</h3>
+      
+      <textarea id="feedback-text" placeholder="What’s broken? What’s missing? What’s confusing?" 
+                style="width:100%; height:140px; background:#1e293b; border:1px solid #334155; border-radius:8px; padding:12px; color:white; font-family:inherit; resize:vertical;"></textarea>
+      
+      <input id="feedback-email" type="email" placeholder="Your email (optional)" 
+             style="width:100%; margin-top:10px; background:#1e293b; border:1px solid #334155; border-radius:8px; padding:10px; color:white; font-family:inherit;">
+
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <button id="feedback-cancel" style="flex:1; padding:10px; background:transparent; border:1px solid #475569; color:#94a3b8; border-radius:8px; cursor:pointer;">Cancel</button>
+        <button id="feedback-submit" style="flex:1; padding:10px; background:#38bdf8; color:#0f172a; border:none; border-radius:8px; font-weight:600; cursor:pointer;">Send Feedback</button>
+      </div>
+      
+      <div style="font-size:0.7rem; color:#64748b; margin-top:12px; text-align:center;">
+        Thank you — this helps more than you know.
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/components.js"></script>
+  <script src="./js/utils.js"></script>
+  <script src="./js/theme.js"></script>
+  <script src="./js/api.js"></script>
+  <script src="./js/lead-gate.js"></script>
+  <script src="./js/comparison.js"></script>
+  <script src="./js/ai-widget.js"></script>
+  <script src="./js/app.js"></script>
+
+  <!-- Quick Feedback Widget -->
+  <script>
+    (function() {
+      const fab = document.getElementById('feedback-fab');
+      const modal = document.getElementById('feedback-modal');
+      const cancel = document.getElementById('feedback-cancel');
+      const submit = document.getElementById('feedback-submit');
+      const textarea = document.getElementById('feedback-text');
+      const emailInput = document.getElementById('feedback-email');
+
+      if (!fab || !modal) return;
+
+      fab.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        setTimeout(() => textarea.focus(), 50);
+      });
+
+      cancel.addEventListener('click', () => {
+        modal.style.display = 'none';
+        textarea.value = '';
+      });
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          textarea.value = '';
+        }
+      });
+
+      submit.addEventListener('click', () => {
+        const text = textarea.value.trim();
+        if (!text) {
+          textarea.style.borderColor = '#f87171';
+          setTimeout(() => { if (textarea) textarea.style.borderColor = '#334155'; }, 1500);
+          return;
+        }
+
+        const email = emailInput.value.trim();
+        const subject = encodeURIComponent('FlopSource Feedback');
+        const body = encodeURIComponent(
+          `Feedback:\n${text}\n\n` +
+          (email ? `From: ${email}\n\n` : '') +
+          `---\nSent from FlopSource (local test)`
+        );
+
+        // Copy to clipboard as backup
+        navigator.clipboard.writeText(text).catch(() => {});
+
+        // Open email client
+        window.location.href = `mailto:your-email@example.com?subject=${subject}&body=${body}`;
+
+        // Close modal
+        setTimeout(() => {
+          modal.style.display = 'none';
+          textarea.value = '';
+          emailInput.value = '';
+          alert('Thank you! Your email client should have opened. (Feedback was also copied to clipboard)');
+        }, 400);
+      });
+    })();
+  </script>
+
+  <!-- FlopSource Brand System -->
+  <script type="module">
+    import FlopSource from './flopsource-brand.js';
+
+    // Initialize with automatic theme detection and favicon management
+    FlopSource.init({ 
+      theme: 'auto', 
+      favicon: true 
+    });
+
+    // Render the logo into the header (compact, no tagline, fits the 60px bar cleanly)
+    FlopSource.renderLogo('#nav-logo', { size: 'sm', showTagline: false });
+
+    // Make the rendered logo navigate back to the marketing landing page at project root (index.html).
+    // IMPORTANT: Run serve.bat from the FlopSource *root* folder (not from inside website/)
+    // so that the marketing landing page is at / and this app is at /website/.
+    // We attach the handler after the brand system renders the logo (it uses innerHTML).
+    function wireLogoNavigation() {
+      const logoWrapper = document.getElementById('logo-home-link');
+      if (!logoWrapper) return;
+
+      logoWrapper.style.cursor = 'pointer';
+
+      logoWrapper.onclick = function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        const path = location.pathname;
+
+        if (path.includes('/website/')) {
+          // Served from inside the website/ folder (common when using website/serve.ps1)
+          window.location.href = '../index.html';
+        } else {
+          // Served from project root (recommended)
+          window.location.href = 'index.html';
+        }
+      };
+    }
+
+    // Initial wiring (after brand renders the logo)
+    setTimeout(wireLogoNavigation, 120);
+
+    // Re-wire after theme changes re-render the logo
+    document.addEventListener('flopSourceThemeChange', wireLogoNavigation);
+
+    // Expose globally for debugging / other scripts
+    window.FlopSourceBrand = FlopSource;
+  </script>
+</body>
+</html>

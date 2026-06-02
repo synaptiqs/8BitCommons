@@ -1,0 +1,189 @@
+/**
+ * FlopSource Brand System
+ * Core Matrix logo — CSS component + design tokens
+ * Compatible with Tailwind CSS (uses custom properties alongside utility classes)
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Usage:
+ *   <a class="fs-logo fs-logo--md" href="/">
+ *     <span class="fs-logo__mark"></span>
+ *     <span class="fs-logo__wordmark">
+ *       <span class="fs-logo__name">FlopSource</span>
+ *       <span class="fs-logo__tagline">AI Compute Directory</span>
+ *     </span>
+ *   </a>
+ *
+ *   Or inject via JS:  FlopSource.renderLogo('#nav-logo', { size: 'md' })
+ */
+
+/* ─── Design Tokens ─────────────────────────────────────────────────────── */
+:root {
+  /* Raw palette */
+  --fs-sky-400:   #38bdf8;
+  --fs-blue-600:  #2563eb;
+  --fs-blue-50:   #eff6ff;
+  --fs-slate-900: #0f172a;
+  --fs-slate-800: #1e293b;
+  --fs-slate-500: #64748b;
+  --fs-slate-400: #94a3b8;
+  --fs-slate-200: #e2e8f0;
+  --fs-slate-50:  #f8fafc;
+  --fs-ink-950:   #0c1a2e;
+
+  /* Semantic tokens — dark mode defaults */
+  --fs-accent:    var(--fs-sky-400);
+  --fs-bg:        var(--fs-slate-900);
+  --fs-text:      #f1f5f9;
+  --fs-sub:       #475569;
+  --fs-mark-bg:   var(--fs-ink-950);
+}
+
+/* System light-mode override */
+@media (prefers-color-scheme: light) {
+  :root {
+    --fs-accent:  var(--fs-blue-600);
+    --fs-bg:      var(--fs-slate-50);
+    --fs-text:    var(--fs-slate-900);
+    --fs-sub:     var(--fs-slate-400);
+    --fs-mark-bg: var(--fs-blue-50);
+  }
+}
+
+/* Manual theme overrides (set by JS via data-theme attribute) */
+[data-theme="dark"] {
+  --fs-accent:  var(--fs-sky-400);
+  --fs-bg:      var(--fs-slate-900);
+  --fs-text:    #f1f5f9;
+  --fs-sub:     #475569;
+  --fs-mark-bg: var(--fs-ink-950);
+}
+
+[data-theme="light"] {
+  --fs-accent:  var(--fs-blue-600);
+  --fs-bg:      var(--fs-slate-50);
+  --fs-text:    var(--fs-slate-900);
+  --fs-sub:     var(--fs-slate-400);
+  --fs-mark-bg: var(--fs-blue-50);
+}
+
+/* ─── Logo Lockup ───────────────────────────────────────────────────────── */
+.fs-logo {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             var(--fs-logo-gap, 12px);
+  text-decoration: none;
+  user-select:     none;
+  line-height:     1;
+  flex-shrink:     0;
+}
+
+/* Mark: SVG injected by JS, or swap for <img src="favicon.svg"> */
+.fs-logo__mark {
+  display:     flex;
+  align-items: center;
+  flex-shrink: 0;
+  width:       var(--fs-mark-size, 36px);
+  height:      var(--fs-mark-size, 36px);
+}
+
+.fs-logo__mark svg {
+  width:  100%;
+  height: 100%;
+}
+
+/* Wordmark block */
+.fs-logo__wordmark {
+  display:        flex;
+  flex-direction: column;
+  gap:            3px;
+}
+
+.fs-logo__name {
+  font-family:    Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight:    700;
+  letter-spacing: -0.03em;
+  color:          var(--fs-text);
+  line-height:    1;
+  font-size:      var(--fs-name-size, 18px);
+}
+
+.fs-logo__tagline {
+  font-family:    Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight:    400;
+  font-size:      var(--fs-tag-size, 7.5px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color:          var(--fs-sub);
+  line-height:    1;
+}
+
+/* ─── Size Variants ─────────────────────────────────────────────────────── */
+.fs-logo--xs {
+  --fs-logo-gap:  8px;
+  --fs-mark-size: 24px;
+  --fs-name-size: 13px;
+  --fs-tag-size:  6px;
+}
+
+.fs-logo--sm {
+  --fs-logo-gap:  10px;
+  --fs-mark-size: 28px;
+  --fs-name-size: 15px;
+  --fs-tag-size:  6.5px;
+}
+
+.fs-logo--md {
+  --fs-logo-gap:  12px;
+  --fs-mark-size: 36px;
+  --fs-name-size: 18px;
+  --fs-tag-size:  7.5px;
+}
+
+.fs-logo--lg {
+  --fs-logo-gap:  14px;
+  --fs-mark-size: 48px;
+  --fs-name-size: 24px;
+  --fs-tag-size:  9px;
+}
+
+.fs-logo--xl {
+  --fs-logo-gap:  18px;
+  --fs-mark-size: 64px;
+  --fs-name-size: 32px;
+  --fs-tag-size:  11px;
+}
+
+/* ─── Mark-only variant (nav icons, mobile, etc.) ───────────────────────── */
+.fs-logo--icon-only .fs-logo__wordmark {
+  display: none;
+}
+
+.fs-logo--icon-only {
+  --fs-logo-gap: 0;
+}
+
+/* ─── Hover state ───────────────────────────────────────────────────────── */
+.fs-logo:hover .fs-logo__name {
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+.fs-logo:hover .fs-logo__mark svg .fs-dot {
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+/* ─── Mark SVG internal classes (used by JS-generated SVG) ─────────────── */
+.fs-mark-bg   { fill: var(--fs-mark-bg); }
+.fs-mark-dot  { fill: var(--fs-accent);  }
+
+/* ─── Standalone icon tile (for og:image, email headers, etc.) ─────────── */
+.fs-icon-tile {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  background:      var(--fs-mark-bg);
+  border-radius:   22%;
+  padding:         18%;
+  width:           var(--fs-tile-size, 48px);
+  height:          var(--fs-tile-size, 48px);
+}

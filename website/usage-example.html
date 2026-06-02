@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlopSource — Brand Usage Reference</title>
+
+  <!-- 1. Brand CSS -->
+  <link rel="stylesheet" href="flopsource-brand.css">
+
+  <!--
+    2. SVG favicon — static file drop-in (preferred).
+       The JS also injects this at runtime via injectFavicon().
+  -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <style>
+    /* Page chrome — not part of the brand system */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, -apple-system, sans-serif;
+      background: var(--fs-bg, #0f172a);
+      color: var(--fs-text, #f1f5f9);
+      padding: 40px;
+      transition: background 0.2s, color 0.2s;
+    }
+    h2 { font-size: 11px; letter-spacing: 3px; color: var(--fs-sub); text-transform: uppercase; margin-bottom: 20px; }
+    section { margin-bottom: 48px; }
+    .row { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; margin-bottom: 20px; }
+    .theme-btn {
+      padding: 8px 16px; border-radius: 6px; border: 1px solid #334155;
+      background: transparent; color: var(--fs-text); font-size: 13px;
+      cursor: pointer; font-family: inherit;
+    }
+    .theme-btn:hover { border-color: var(--fs-accent); color: var(--fs-accent); }
+    .swatch {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; border-radius: 8px; font-size: 10px;
+      font-weight: 600; letter-spacing: 1px; color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Theme toggle ─────────────────────────────────────────────────────── -->
+  <section>
+    <h2>Theme</h2>
+    <div class="row">
+      <button class="theme-btn" onclick="FlopSource.setTheme('auto')">Auto</button>
+      <button class="theme-btn" onclick="FlopSource.setTheme('dark')">Dark</button>
+      <button class="theme-btn" onclick="FlopSource.setTheme('light')">Light</button>
+    </div>
+  </section>
+
+  <!-- ── Logo lockup sizes ─────────────────────────────────────────────────── -->
+  <section>
+    <h2>Lockup sizes</h2>
+    <div class="row" style="flex-direction:column; align-items:flex-start;">
+      <div id="logo-xs"></div>
+      <div id="logo-sm"></div>
+      <div id="logo-md"></div>
+      <div id="logo-lg"></div>
+      <div id="logo-xl"></div>
+    </div>
+  </section>
+
+  <!-- ── Mark only (icon) ─────────────────────────────────────────────────── -->
+  <section>
+    <h2>Mark only — icon sizes</h2>
+    <div class="row">
+      <div id="mark-16"></div>
+      <div id="mark-24"></div>
+      <div id="mark-32"></div>
+      <div id="mark-48"></div>
+      <div id="mark-64"></div>
+      <div id="mark-96"></div>
+    </div>
+  </section>
+
+  <!-- ── No-background mark (for coloured surfaces) ──────────────────────── -->
+  <section>
+    <h2>Mark, no background (transparent — for coloured surfaces)</h2>
+    <div class="row">
+      <div id="mark-nobg-dark"  style="background:#0f172a; padding:12px; border-radius:8px;"></div>
+      <div id="mark-nobg-light" style="background:#f8fafc; padding:12px; border-radius:8px;"></div>
+      <div id="mark-nobg-blue"  style="background:#2563eb; padding:12px; border-radius:8px;"></div>
+    </div>
+  </section>
+
+  <!-- ── Colour tokens ─────────────────────────────────────────────────────── -->
+  <section>
+    <h2>Brand palette</h2>
+    <div class="row">
+      <div class="swatch" style="background:#38bdf8; color:#0c1a2e;">sky-400</div>
+      <div class="swatch" style="background:#2563eb;">blue-600</div>
+      <div class="swatch" style="background:#0f172a; border:1px solid #1e293b;">slate-900</div>
+      <div class="swatch" style="background:#0c1a2e; border:1px solid #1e293b;">ink-950</div>
+      <div class="swatch" style="background:#f8fafc; color:#0f172a;">slate-50</div>
+    </div>
+  </section>
+
+  <!-- ── PNG export ────────────────────────────────────────────────────────── -->
+  <section>
+    <h2>Export PNG</h2>
+    <button class="theme-btn" id="export-btn">Download mark as 512px PNG</button>
+  </section>
+
+  <!-- 3. Brand JS -->
+  <script type="module">
+    import FlopSource from './flopsource-brand.js';
+
+    // Make available globally for onclick handlers above
+    window.FlopSource = FlopSource;
+
+    // ── Bootstrap ──────────────────────────────────────────────────────────
+    FlopSource.init({
+      theme:   'auto',   // 'dark' | 'light' | 'auto'
+      favicon: true,     // inject SVG favicon + PNG fallbacks
+    });
+
+    // ── Render lockup sizes ────────────────────────────────────────────────
+    ['xs', 'sm', 'md', 'lg', 'xl'].forEach(size => {
+      FlopSource.renderLogo(`#logo-${size}`, { size });
+    });
+
+    // ── Render marks ───────────────────────────────────────────────────────
+    [16, 24, 32, 48, 64, 96].forEach(px => {
+      FlopSource.renderMark(`#mark-${px}`, px);
+    });
+
+    // ── Marks without background ───────────────────────────────────────────
+    FlopSource.renderMark('#mark-nobg-dark',  40, { mode: 'dark',  withBg: false });
+    FlopSource.renderMark('#mark-nobg-light', 40, { mode: 'light', withBg: false });
+    FlopSource.renderMark('#mark-nobg-blue',  40, { mode: 'dark',  withBg: false });
+
+    // ── Re-render on theme change ──────────────────────────────────────────
+    document.addEventListener('flopSourceThemeChange', () => {
+      ['xs', 'sm', 'md', 'lg', 'xl'].forEach(size => {
+        FlopSource.renderLogo(`#logo-${size}`, { size });
+      });
+      [16, 24, 32, 48, 64, 96].forEach(px => {
+        FlopSource.renderMark(`#mark-${px}`, px);
+      });
+      FlopSource.renderMark('#mark-nobg-dark',  40, { mode: 'dark',  withBg: false });
+      FlopSource.renderMark('#mark-nobg-light', 40, { mode: 'light', withBg: false });
+    });
+
+    // ── PNG export ─────────────────────────────────────────────────────────
+    document.getElementById('export-btn').addEventListener('click', async () => {
+      const blob = await FlopSource.exportPNG(512, true);
+      const a    = document.createElement('a');
+      a.href     = URL.createObjectURL(blob);
+      a.download = 'flopsource-mark-512.png';
+      a.click();
+    });
+  </script>
+</body>
+</html>

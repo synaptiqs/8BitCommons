@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlopSource • AI Compute Infrastructure Directory (DARK BENTO PREVIEW)</title>
+  <meta name="description" content="TEMPORARY PREVIEW FILE - Dark mode bento box design exploration">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    /* ── DARK MODE & BENTO BOX VARIABLES ──────────────────────────── */
+    :root {
+      --bg-main:            #0f172a;       /* Deep slate background */
+      --bg-surface:         #1e293b;       /* Card/Panel background */
+      --bg-inner:           #0b1120;       /* Deep inset background for bento modules */
+      --border:             #334155;
+      --border-md:          #475569;
+      --border-strong:      #64748b;
+      --border-hover:       #475569;
+      
+      --text-primary:       #f8fafc;
+      --text-secondary:     #94a3b8;
+      --text-muted:         #64748b;
+      
+      --accent:             #38bdf8;       /* Electric Blue */
+      --accent-dim:         #0284c7;
+      --accent-glow:        rgba(56, 189, 248, 0.15);
+      --accent-glow-strong: rgba(56, 189, 248, 0.30);
+      
+      /* Layer Badges adapted for dark mode */
+      --cloud-color: #38bdf8; --cloud-bg: rgba(56,189,248,0.1);  --cloud-border: rgba(56,189,248,0.2);
+      --bare-color:  #a78bfa; --bare-bg:  rgba(167,139,250,0.1); --bare-border:  rgba(167,139,250,0.2);
+      --edge-color:  #34d399; --edge-bg:  rgba(52,211,153,0.1);  --edge-border:  rgba(52,211,153,0.2);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    
+    html { color-scheme: dark; }
+    body { 
+      background: var(--bg-main); 
+      color: var(--text-primary); 
+      min-height: 100vh; 
+      -webkit-font-smoothing: antialiased; 
+    }
+
+    /* ── Ambient Backgrounds ──────────────────────────────────── */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .bg-glow {
+      position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 1000px; height: 600px; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
+    }
+    .z1 { position: relative; z-index: 1; }
+
+    /* ── Header & Search ──────────────────────────────────────── */
+    .app-header {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-mark {
+      width: 34px; height: 34px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 24px var(--accent-glow-strong);
+    }
+
+    .search-input {
+      width: 320px; background: var(--bg-inner); border: 1px solid var(--border);
+      color: var(--text-primary); border-radius: 12px; padding: 7px 14px 7px 36px;
+      font-size: 0.85rem; outline: none; transition: all 0.2s ease;
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { 
+      border-color: var(--accent); 
+      background: var(--bg-surface); 
+      box-shadow: 0 0 0 3px var(--accent-glow); 
+    }
+
+    .sort-select { 
+      background: var(--bg-inner); border: 1px solid var(--border); 
+      color: var(--text-secondary); border-radius: 8px; padding: 5px 10px; 
+      font-size: 0.75rem; cursor: pointer; outline: none; transition: all 0.15s; 
+    }
+    .sort-select:focus { border-color: var(--accent); color: var(--text-primary); }
+
+    /* ── Stats bar ───────────────────────────────────── */
+    .stats-bar { background: var(--bg-surface); border-bottom: 1px solid var(--border); }
+    .stat-card { 
+      background: var(--bg-inner); border: 1px solid var(--border); 
+      border-radius: 10px; padding: 10px 18px; min-width: 80px; 
+    }
+
+    /* ── Filter Pills & Active Chips ─────────────────── */
+    .f-pill { 
+      display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; 
+      border-radius: 20px; font-size: 0.75rem; font-weight: 500; cursor: pointer; 
+      user-select: none; border: 1px solid var(--border); background: var(--bg-surface); 
+      color: var(--text-secondary); transition: all 0.15s ease; white-space: nowrap; 
+    }
+    .f-pill:hover { border-color: var(--border-hover); color: var(--text-primary); background: var(--bg-inner); }
+    .f-pill.selected { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+    
+    .active-chip { 
+      display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; 
+      font-weight: 600; padding: 4px 6px 4px 12px; border-radius: 20px; 
+      background: var(--accent-glow); border: 1px solid var(--accent); color: var(--accent); 
+    }
+    .active-chip-x { 
+      width: 20px; height: 20px; background: rgba(56, 189, 248, 0.2); 
+      border-radius: 50%; border: none; cursor: pointer; display: flex; 
+      align-items: center; justify-content: center; color: var(--accent); 
+      font-size: 0.6rem; transition: background 0.15s; 
+    }
+    .active-chip-x:hover { background: rgba(56, 189, 248, 0.4); }
+
+    /* ── Provider Card (Bento / Dark) ─────────────────── */
+    .provider-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .provider-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border-color: var(--border-hover);
+    }
+    .card-name { font-size: 0.98rem; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; }
+    .card-location { font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; }
+
+    .hw-chip { 
+      display: inline-block; font-size: 0.65rem; font-weight: 500; padding: 2px 8px; 
+      border-radius: 4px; background: var(--bg-inner); border: 1px solid var(--border); 
+      color: var(--text-secondary); 
+    }
+
+    .layer-badge { 
+      font-size: 0.65rem; font-weight: 600; padding: 3px 10px; border-radius: 6px; 
+      letter-spacing: 0.01em; 
+    }
+    .badge-cloud { color: var(--cloud-color); background: var(--cloud-bg); border: 1px solid var(--cloud-border); }
+    .badge-bare  { color: var(--bare-color);  background: var(--bare-bg);  border: 1px solid var(--bare-border); }
+    .badge-edge  { color: var(--edge-color);  background: var(--edge-bg);  border: 1px solid var(--edge-border); }
+
+    /* ── Buttons ─────────────────────────────────────── */
+    .btn-primary { 
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%); 
+      color: #0f172a; font-weight: 600; border-radius: 9px; border: none; 
+      cursor: pointer; padding: 8px 18px; font-size: 0.82rem; display: inline-flex; 
+      align-items: center; gap: 6px; transition: all 0.2s ease; font-family: inherit; 
+    }
+    .btn-primary:hover { 
+      box-shadow: 0 0 22px var(--accent-glow-strong); 
+      transform: translateY(-1px); 
+    }
+
+    .btn-ghost { 
+      background: var(--bg-inner); color: var(--text-secondary); font-weight: 500; 
+      border-radius: 9px; cursor: pointer; padding: 7px 15px; font-size: 0.8rem; 
+      border: 1px solid var(--border-md); display: inline-flex; align-items: center; 
+      gap: 6px; transition: all 0.15s ease; font-family: inherit; 
+    }
+    .btn-ghost:hover { background: var(--bg-surface); color: var(--text-primary); }
+
+    /* ── Bento / Card Metrics ────────────────────────── */
+    .card-metric {
+      background: var(--bg-inner);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+    .card-metric-val { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+    .card-metric-lbl { font-size: 0.58rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── Modal (Dark) ────────────────────────────────── */
+    .modal-overlay { background: rgba(15,23,42,0.75); backdrop-filter: blur(10px); }
+    .modal-panel { 
+      background: var(--bg-surface); border: 1px solid var(--border-md); 
+      border-radius: 18px; width: 100%; max-width: 660px; max-height: 88vh; 
+      overflow-y: auto; 
+    }
+    .modal-header { 
+      padding: 20px 24px 18px; border-bottom: 1px solid var(--border); 
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; 
+    }
+
+    /* ── Bento Grid Feel ─────────────────────────────── */
+    .bento-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .bento-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    /* Warning banner for temp file */
+    .temp-warning {
+      background: #451a03;
+      color: #fed7aa;
+      border: 1px solid #c2410f;
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <!-- TEMP WARNING -->
+  <div class="temp-warning">
+    ⚠️ TEMPORARY DARK BENTO PREVIEW FILE — NOT COMMITTED — FOR VISUAL TESTING ONLY
+  </div>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- HEADER -->
+  <header class="app-header sticky top-0 z-50 z1">
+    <div class="max-w-7xl mx-auto px-6 h-[60px] flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2.5 flex-shrink-0">
+        <div class="logo-mark">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <rect x="2"  y="2"  width="6" height="6" rx="1" fill="white" opacity="0.9"/>
+            <rect x="10" y="2"  width="6" height="6" rx="1" fill="white" opacity="0.9"/>
+            <rect x="2"  y="10" width="6" height="6" rx="1" fill="white" opacity="0.9"/>
+            <rect x="10" y="10" width="6" height="6" rx="1" fill="white" opacity="0.45"/>
+          </svg>
+        </div>
+        <div>
+          <div class="logo-wordmark">FlopSource</div>
+          <div class="logo-sub">AI Compute Directory</div>
+        </div>
+      </div>
+
+      <div class="search-wrap hidden md:block">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="global-search" class="search-input" placeholder="Search providers, locations…">
+      </div>
+
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <div class="hidden md:flex items-center gap-1.5">
+          <span style="font-size:0.68rem; color:var(--text-secondary);">Sort</span>
+          <select id="sort-select" class="sort-select">
+            <option value="name-asc">Name A–Z</option>
+            <option value="gpus-desc">Most GPUs</option>
+            <option value="price-asc">Lowest Price</option>
+            <option value="verified-desc">Recently Verified</option>
+          </select>
+        </div>
+        <div style="background:var(--accent-glow); border:1px solid rgba(56,189,248,0.2); color:var(--accent); padding:3px 11px; border-radius:20px; font-size:0.66rem; font-weight:600; white-space:nowrap;">
+          <span id="provider-count-header">— providers</span>
+        </div>
+        <button id="reset-button" class="btn-ghost" style="padding:6px 12px; font-size:0.75rem;">
+          <i class="fa-solid fa-rotate-right" style="font-size:0.7rem;"></i>
+          <span class="hidden sm:inline">Reset</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- STATS BAR (BENTO STYLE) -->
+  <div class="stats-bar z1">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center gap-3 overflow-x-auto">
+      <div class="stat-card flex-shrink-0"><div class="stat-value" id="stat-providers">—</div><div class="stat-label">Providers</div></div>
+      <div class="stat-card flex-shrink-0"><div class="stat-value" id="stat-gpus">—</div><div class="stat-label">Total GPUs</div></div>
+      <div class="stat-card flex-shrink-0"><div class="stat-value" id="stat-cloud">—</div><div class="stat-label">GPU Clouds</div></div>
+      <div class="stat-card flex-shrink-0"><div class="stat-value" id="stat-baremetal">—</div><div class="stat-label">Bare-Metal</div></div>
+      <div class="stat-card flex-shrink-0"><div class="stat-value" id="stat-edge">—</div><div class="stat-label">Edge Nodes</div></div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="max-w-7xl mx-auto px-6 py-8 z1">
+    <div class="mb-7">
+      <h1 style="font-size:1.65rem; font-weight:700; letter-spacing:-0.03em; color:var(--text-primary); line-height:1.2;">AI Compute Infrastructure Directory</h1>
+      <p style="margin-top:7px; font-size:0.875rem; color:var(--text-secondary); max-width:520px; line-height:1.65;">Enterprise GPU clouds, bare-metal facilities, and edge nodes. Filter by hardware architecture, cooling technology, and regulatory jurisdiction.</p>
+    </div>
+
+    <div class="flex gap-6">
+
+      <!-- SIDEBAR (BENTO) -->
+      <aside style="width:208px; flex-shrink:0;">
+        <div style="position:sticky; top:72px;">
+          <div class="flex items-center justify-between mb-3" style="padding:0 2px;">
+            <div style="font-size:0.73rem; font-weight:600; color:var(--text-primary); display:flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-sliders" style="color:var(--accent); font-size:0.62rem;"></i>
+              Filters
+            </div>
+            <button id="clear-filters" class="btn-ghost" style="padding:3px 8px; font-size:0.65rem;">
+              <i class="fa-solid fa-times"></i> Clear
+            </button>
+          </div>
+          <div id="active-filters-summary" class="mb-3" style="min-height:24px;"></div>
+          <div class="bento-card" style="padding:16px; max-height:72vh; overflow-y:auto;">
+            <!-- Filter groups would go here -->
+            <div style="font-size:0.7rem; color:var(--text-muted); padding:0 2px;">Filters apply instantly. Data is client-side.</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RESULTS -->
+      <main class="flex-1 min-w-0">
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-baseline gap-2">
+            <span id="results-count" style="font-size:1.5rem; font-weight:700; color:var(--text-primary);">—</span>
+            <span style="font-size:0.85rem; color:var(--text-secondary);">providers match</span>
+          </div>
+        </div>
+
+        <!-- Sample Bento Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+
+          <!-- Sample Card 1 -->
+          <div class="bento-card p-5">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <div class="card-name">CoreWeave</div>
+                <div class="card-location">New Jersey & Virginia, USA</div>
+              </div>
+              <span class="layer-badge badge-cloud">GPU Cloud</span>
+            </div>
+            <div class="mb-3">
+              <div style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:4px;">Hardware</div>
+              <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                <span class="hw-chip">NVIDIA H100</span>
+                <span class="hw-chip">NVIDIA H200</span>
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px;">
+              <div class="card-metric"><div class="card-metric-val">48K</div><div class="card-metric-lbl">GPUs</div></div>
+              <div class="card-metric"><div class="card-metric-val">3.2</div><div class="card-metric-lbl">Tbps</div></div>
+              <div class="card-metric"><div class="card-metric-val">99.99</div><div class="card-metric-lbl">Uptime</div></div>
+            </div>
+            <div style="margin-top:12px; font-size:0.85rem; font-weight:600;">$2.65 <span style="color:var(--text-muted); font-size:0.7rem;">/GPU-hr</span></div>
+          </div>
+
+          <!-- Sample Card 2 -->
+          <div class="bento-card p-5">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <div class="card-name">Crusoe Energy</div>
+                <div class="card-location">Texas & Colorado, USA</div>
+              </div>
+              <span class="layer-badge badge-cloud">GPU Cloud</span>
+            </div>
+            <div class="mb-3">
+              <div style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:4px;">Hardware</div>
+              <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                <span class="hw-chip">NVIDIA H100</span>
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px;">
+              <div class="card-metric"><div class="card-metric-val">18K</div><div class="card-metric-lbl">GPUs</div></div>
+              <div class="card-metric"><div class="card-metric-val">3.2</div><div class="card-metric-lbl">Tbps</div></div>
+              <div class="card-metric"><div class="card-metric-val">99.99</div><div class="card-metric-lbl">Uptime</div></div>
+            </div>
+            <div style="margin-top:12px; font-size:0.85rem; font-weight:600;">$2.25 <span style="color:var(--text-muted); font-size:0.7rem;">/GPU-hr</span></div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding:40px 0; color:var(--text-muted); font-size:0.8rem;">
+    This is a temporary visual preview only.<br>
+    Open this file directly in your browser to see the dark bento theme.
+  </div>
+</body>
+</html>

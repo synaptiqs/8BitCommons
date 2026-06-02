@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlopSource - AI Backend Test (Development Only)</title>
+  <style>
+    :root {
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --border: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent: #0ea47a;
+    }
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-base); color: var(--text-primary); margin: 0; padding: 20px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    h1 { margin-bottom: 8px; }
+    .provider-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 20px 0; }
+    .provider-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s; }
+    .provider-card.selected { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14, 164, 122, 0.1); }
+    .provider-name { font-weight: 600; font-size: 1.05rem; }
+    .provider-meta { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
+    .btn { padding: 10px 20px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 0.95rem; cursor: pointer; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-secondary { background: #f1f5f9; color: var(--text-primary); }
+    .modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+    .modal-content { background: var(--bg-surface); border-radius: 14px; width: 100%; max-width: 980px; max-height: 92vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .modal-header { padding: 16px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff; }
+    .modal-body { padding: 20px 22px; overflow: auto; flex: 1; }
+    .ai-button-area { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .powered-by { font-size: 0.58rem; color: #64748b; opacity: 0.75; }
+    .ai-insights { margin-top: 16px; }
+    .ai-loading { padding: 14px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; display: flex; align-items: center; gap: 8px; color: #0ea47a; font-weight: 500; }
+    .ai-result-box { border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; background: #fff; }
+    .ai-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .ai-actions button { font-size: 0.75rem; padding: 4px 10px; border-radius: 6px; }
+    .error-box { border: 1px solid #f87171; background: #fef2f2; color: #b91c1c; padding: 14px 16px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>FlopSource AI Backend Test</h1>
+    <p><strong>Development / testing tool only.</strong> Use this to validate the Cloudflare Worker before deploying the real site. The production UI is in <code>website/flopsourcedirectory.html</code>.</p>
+
+    <h3>1. Select Providers (min 2)</h3>
+    <div class="provider-grid" id="provider-grid"></div>
+
+    <button class="btn" id="open-comparison-btn" disabled>Open Comparison</button>
+
+    <div style="margin-top: 40px; font-size: 0.85rem; color: #64748b;">
+      Worker URL: <code id="worker-url-display"></code><br>
+      (Edit the <strong>WORKER_URL</strong> constant at the top of this file)
+    </div>
+  </div>
+
+  <!-- Simulated Comparison Modal -->
+  <div class="modal" id="comparison-modal">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header">
+        <div>
+          <div style="font-size: 1.15rem; font-weight: 700;">Provider Comparison</div>
+          <div style="font-size: 0.75rem; color: #64748b;" id="modal-subtitle"></div>
+        </div>
+
+        <!-- Custom AI Analysis Button + Powered by line -->
+        <div class="ai-button-area">
+          <button id="custom-ai-btn" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 14px; display: flex; align-items: center; gap: 6px;">
+            <span>Custom AI Analysis</span>
+          </button>
+          <div class="powered-by">Powered by open models</div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Use Case -->
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 0.75rem; font-weight: 600; color: #64748b; margin-bottom: 6px;">Use Case</div>
+          <div style="display: flex; gap: 8px;">
+            <button class="use-case-pill active" data-usecase="balanced">Balanced Enterprise</button>
+          </div>
+        </div>
+
+        <!-- AI Insights Container (this is where the real magic happens) -->
+        <div id="ai-insights-container" style="display: none;"></div>
+
+        <!-- Simple comparison table placeholder -->
+        <div style="margin-top: 24px;">
+          <h4 style="margin-bottom: 8px;">Selected Providers</h4>
+          <div id="selected-providers-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px;"></div>
+        </div>
+      </div>
+
+      <div style="padding: 14px 22px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; background: #f8fafc;">
+        <button id="close-modal-btn" class="btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==================== CONFIGURATION ====================
+    const WORKER_URL = 'https://flopsourceadvisor.synaptiqs.workers.dev';
+
+    // Realistic sample providers (feel free to add more)
+    const SAMPLE_PROVIDERS = [
+      { id: "cw", provider_name: "CoreWeave", layer_type: "GPU Cloud", primary_location: "New Jersey & Virginia, USA", total_gpus: 48000, price_per_gpu_hour_usd: 2.65, cooling_type: "Liquid", sla_uptime_percent: 99.99, jurisdiction_zone: "US-Federal", hardware_architectures: ["NVIDIA H100", "NVIDIA H200"] },
+      { id: "cr", provider_name: "Crusoe Energy", layer_type: "GPU Cloud", primary_location: "Texas & Colorado, USA", total_gpus: 18000, price_per_gpu_hour_usd: 2.25, cooling_type: "Air", sla_uptime_percent: 99.5, jurisdiction_zone: "US-Federal", hardware_architectures: ["NVIDIA H100"] },
+      { id: "vast", provider_name: "Vast.ai", layer_type: "GPU Cloud", primary_location: "Global (distributed)", total_gpus: 120000, price_per_gpu_hour_usd: null, cooling_type: "Air", sla_uptime_percent: 99.5, jurisdiction_zone: "Various", hardware_architectures: ["NVIDIA H100", "AMD MI300X"] },
+      { id: "lambda", provider_name: "Lambda Labs", layer_type: "GPU Cloud", primary_location: "California, USA", total_gpus: 24000, price_per_gpu_hour_usd: 3.10, cooling_type: "Liquid", sla_uptime_percent: 99.9, jurisdiction_zone: "US-Federal", hardware_architectures: ["NVIDIA H100"] }
+    ];
+
+    const USE_CASES = {
+      balanced: {
+        name: 'Balanced Enterprise',
+        description: 'General purpose workloads with balanced priorities.',
+        weights: [0.28, 0.24, 0.20, 0.16, 0.12],
+        costBaselineForQuote: 55
+      },
+      training: {
+        name: 'Large-Scale Training',
+        description: 'Long-running, high-throughput training jobs. Scale and raw performance matter most.',
+        weights: [0.20, 0.22, 0.28, 0.22, 0.08],
+        costBaselineForQuote: 60
+      },
+      inference: {
+        name: 'Production Inference',
+        description: 'Latency-sensitive serving at scale. Price/performance and efficiency are critical.',
+        weights: [0.25, 0.30, 0.15, 0.18, 0.12],
+        costBaselineForQuote: 50
+      },
+      finetuning: {
+        name: 'Fine-Tuning & Experimentation',
+        description: 'Iterative work with mixed job sizes. Flexibility + reasonable cost.',
+        weights: [0.22, 0.26, 0.22, 0.18, 0.12],
+        costBaselineForQuote: 58
+      },
+      research: {
+        name: 'Research & Prototyping',
+        description: 'Exploratory workloads where availability and performance flexibility matter.',
+        weights: [0.18, 0.18, 0.26, 0.26, 0.12],
+        costBaselineForQuote: 62
+      }
+    };
+
+    // ==================== STATE ====================
+    let selectedIds = new Set();
+    let currentUseCase = "balanced";
+    let lastAnalysis = null;
+
+    // ==================== UI RENDERING ====================
+    function renderProviderGrid() {
+      const grid = document.getElementById('provider-grid');
+      grid.innerHTML = '';
+
+      SAMPLE_PROVIDERS.forEach(provider => {
+        const card = document.createElement('div');
+        card.className = `provider-card ${selectedIds.has(provider.id) ? 'selected' : ''}`;
+        card.innerHTML = `
+          <div class="provider-name">${provider.provider_name}</div>
+          <div class="provider-meta">${provider.layer_type} • ${provider.primary_location}</div>
+          <div class="provider-meta">${provider.total_gpus.toLocaleString()} GPUs • ${provider.price_per_gpu_hour_usd ? '$' + provider.price_per_gpu_hour_usd + '/hr' : 'Quote only'}</div>
+        `;
+        card.onclick = () => toggleProvider(provider.id, card);
+        grid.appendChild(card);
+      });
+
+      updateOpenButton();
+    }
+
+    function toggleProvider(id, card) {
+      if (selectedIds.has(id)) {
+        selectedIds.delete(id);
+        card.classList.remove('selected');
+      } else {
+        selectedIds.add(id);
+        card.classList.add('selected');
+      }
+      updateOpenButton();
+    }
+
+    function updateOpenButton() {
+      const btn = document.getElementById('open-comparison-btn');
+      btn.disabled = selectedIds.size < 2;
+      btn.textContent = selectedIds.size >= 2 
+        ? `Open Comparison (${selectedIds.size} selected)` 
+        : 'Open Comparison';
+    }
+
+    function openComparisonModal() {
+      const modal = document.getElementById('comparison-modal');
+      const subtitle = document.getElementById('modal-subtitle');
+      const list = document.getElementById('selected-providers-list');
+
+      const selectedProviders = SAMPLE_PROVIDERS.filter(p => selectedIds.has(p.id));
+      subtitle.textContent = `${selectedProviders.length} providers · Test Mode`;
+
+      list.innerHTML = selectedProviders.map(p => `
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:8px; font-size:0.85rem;">
+          <strong>${p.provider_name}</strong><br>
+          <span style="color:#64748b; font-size:0.75rem;">${p.total_gpus.toLocaleString()} GPUs • ${p.price_per_gpu_hour_usd ? '$'+p.price_per_gpu_hour_usd+'/hr' : 'Quote'}</span>
+        </div>
+      `).join('');
+
+      modal.style.display = 'flex';
+
+      // Reset AI insights when reopening
+      document.getElementById('ai-insights-container').style.display = 'none';
+      document.getElementById('ai-insights-container').innerHTML = '';
+    }
+
+    function closeComparisonModal() {
+      document.getElementById('comparison-modal').style.display = 'none';
+    }
+
+    // ==================== AI ANALYSIS (Mimics real app) ====================
+    async function runCustomAIAnalysis() {
+      const container = document.getElementById('ai-insights-container');
+      const selectedProviders = SAMPLE_PROVIDERS.filter(p => selectedIds.has(p.id));
+
+      container.style.display = 'block';
+      container.innerHTML = `
+        <div class="ai-loading">
+          <i class="fa-solid fa-robot fa-spin"></i> Running AI analysis…
+        </div>
+      `;
+
+      try {
+        const prompt = buildAnalysisPrompt(selectedProviders, currentUseCase);
+
+        const res = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'default',
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.4,
+            max_tokens: 900
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Backend error');
+
+        const analysis = data.choices?.[0]?.message?.content || 'No response received.';
+
+        container.innerHTML = `
+          <div class="ai-result-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <div style="font-weight:600; display:flex; align-items:center; gap:6px; color:#0ea47a;">
+                <i class="fa-solid fa-robot"></i> AI Analysis 
+                <span style="font-size:0.65rem; opacity:0.6;">(use-case: ${USE_CASES[currentUseCase].name})</span>
+              </div>
+              <div class="ai-actions">
+                <button class="ai-regenerate btn-secondary">Regenerate</button>
+                <button class="ai-copy btn-secondary">Copy</button>
+                <button class="ai-clear" style="color:#f87171;">Clear</button>
+              </div>
+            </div>
+            <div class="ai-result" style="font-size:0.9rem; line-height:1.5; white-space:pre-wrap;">${escapeHtml(analysis)}</div>
+          </div>
+        `;
+
+        // Wire buttons
+        const regenerate = container.querySelector('.ai-regenerate');
+        const copy = container.querySelector('.ai-copy');
+        const clear = container.querySelector('.ai-clear');
+        const resultEl = container.querySelector('.ai-result');
+
+        if (regenerate) regenerate.onclick = () => runCustomAIAnalysis();
+        if (copy) copy.onclick = async () => {
+          await navigator.clipboard.writeText(resultEl.textContent);
+          const orig = copy.textContent;
+          copy.textContent = 'Copied!';
+          setTimeout(() => copy.textContent = orig, 1500);
+        };
+        if (clear) clear.onclick = () => {
+          container.style.display = 'none';
+          container.innerHTML = '';
+        };
+
+      } catch (err) {
+        container.innerHTML = `
+          <div class="error-box">
+            <strong>AI Analysis error:</strong> ${err.message}<br>
+            <button class="ai-clear btn-secondary" style="margin-top:8px;">Dismiss</button>
+          </div>
+        `;
+        container.querySelector('.ai-clear').onclick = () => {
+          container.style.display = 'none';
+          container.innerHTML = '';
+        };
+      }
+    }
+
+    function buildAnalysisPrompt(selected, useCaseKey) {
+      // This mirrors the real buildAnalysisPrompt in api.js (score-aware version for AI vs Best-In-Class alignment)
+      const uc = USE_CASES[useCaseKey];
+      let lines = [];
+
+      lines.push(`You are a senior enterprise AI infrastructure analyst preparing a vendor comparison memo for an internal procurement team.`);
+      lines.push(`Your tone must be professional, concise, and evidence-based. Avoid hype or marketing language.`);
+      lines.push('');
+
+      lines.push(`### Use Case Context`);
+      lines.push(`Use Case: ${uc.name}`);
+      lines.push(`Description: ${uc.description}`);
+      lines.push(`Scoring Weights (higher = more important for this use case):`);
+      lines.push(`- Reliability & Uptime: ${uc.weights[0]}`);
+      lines.push(`- Cost Efficiency: ${uc.weights[1]}`);
+      lines.push(`- Scalability: ${uc.weights[2]}`);
+      lines.push(`- High Performance: ${uc.weights[3]}`);
+      lines.push(`- Energy Efficiency: ${uc.weights[4]}`);
+      lines.push(`Cost baseline for quote-only providers: ${uc.costBaselineForQuote || 55}`);
+      lines.push('');
+
+      lines.push(`### Providers Being Compared (${selected.length})`);
+      selected.forEach((p, i) => {
+        lines.push(`${i + 1}. ${p.provider_name}`);
+        lines.push(`   - Type: ${p.layer_type}`);
+        lines.push(`   - Location: ${p.primary_location || 'Not disclosed'}`);
+        lines.push(`   - Total GPUs: ${p.total_gpus ? p.total_gpus.toLocaleString() : 'N/A'}`);
+        lines.push(`   - Price per GPU-hour: ${p.price_per_gpu_hour_usd != null ? '$' + p.price_per_gpu_hour_usd.toFixed(2) : 'Quote only'}`);
+        lines.push(`   - Cooling: ${p.cooling_type || 'Not disclosed'}`);
+        lines.push(`   - SLA Uptime: ${p.sla_uptime_percent ? p.sla_uptime_percent + '%' : 'Not disclosed'}`);
+        lines.push(`   - Jurisdiction: ${p.jurisdiction_zone || 'Not disclosed'}`);
+        const hwArch = Array.isArray(p.hardware_architectures) ? p.hardware_architectures : (p.hardware_architectures ? [p.hardware_architectures] : []);
+        lines.push(`   - Hardware: ${hwArch.join(', ') || 'Not disclosed'}`);
+        lines.push(`   - Availability: ${p.availability_status || 'Not disclosed'}`);
+      });
+      lines.push('');
+
+      // Inline the exact same scoring engine used by the real site (so test produces identical prompt structure)
+      function createScoringCategories(u) {
+        const baseline = (u && typeof u.costBaselineForQuote === 'number') ? u.costBaselineForQuote : 55;
+        return [
+          { label: 'Reliability & Uptime', getScore: (p) => p.sla_uptime_percent || 0 },
+          { label: 'Cost Efficiency', getScore: (p) => p.price_per_gpu_hour_usd != null ? 100 - Math.min(p.price_per_gpu_hour_usd, 10) * 8 : baseline },
+          { label: 'Scalability', getScore: (p) => p.total_gpus || 0 },
+          { label: 'High Performance', getScore: (p) => {
+              const hw = (Array.isArray(p.hardware_architectures) ? p.hardware_architectures : (p.hardware_architectures ? [p.hardware_architectures] : [])).join(' ').toLowerCase();
+              if (hw.includes('h200')) return 100; if (hw.includes('h100')) return 90; if (hw.includes('mi300')) return 80;
+              if (hw.includes('a100')) return 70; if (hw.includes('l40')) return 60; return 30;
+            } },
+          { label: 'Energy Efficiency', getScore: (p) => {
+              const c = (p.cooling_type || '').toLowerCase();
+              if (c.includes('immersion')) return 100; if (c.includes('liquid')) return 80; if (c.includes('hybrid')) return 50; return 20;
+            } }
+        ];
+      }
+      function computeProviderScores(provs, u) {
+        const weights = (u && Array.isArray(u.weights)) ? u.weights : [0.2,0.2,0.2,0.2,0.2];
+        const cats = createScoringCategories(u);
+        const scored = (provs || []).map(pr => {
+          let tot = 0; const cs = {};
+          cats.forEach((cat, i) => {
+            const raw = cat.getScore(pr); const n = Math.max(0, Math.min(100, raw || 0));
+            cs[cat.label] = n; tot += n * weights[i];
+          });
+          return { provider: pr, categoryScores: cs, overallScore: tot };
+        });
+        scored.sort((a,b) => b.overallScore - a.overallScore);
+        return { scored, scoringCategories: cats, weights };
+      }
+      function computeBestInClass(provs, u) {
+        const { scored, scoringCategories: cats } = computeProviderScores(provs, u);
+        const bestCounts = {}; (provs||[]).forEach(p => bestCounts[p.id]=0);
+        const categoryWinners = {};
+        cats.forEach(cat => {
+          const s = (provs||[]).map(p => ({provider:p, score: cat.getScore(p)}));
+          const mx = s.length ? Math.max(...s.map(x=>x.score)) : 0;
+          const wins = s.filter(x => x.score === mx);
+          if (wins.length === 1) {
+            const wid = wins[0].provider.id;
+            bestCounts[wid]++;
+            categoryWinners[cat.label] = wid;
+          } else {
+            categoryWinners[cat.label] = null;
+          }
+        });
+        const mbc = Math.max(0, ...Object.values(bestCounts));
+        let top = Object.entries(bestCounts).filter(([,c])=>c===mbc && c>0).map(([id])=>id);
+        if (top.length > 1) {
+          for (const s of scored) { if (top.includes(s.provider.id)) { top = [s.provider.id]; break; } }
+        }
+        const hId = top.length === 1 ? top[0] : null;
+        return { scored, categoryWinners, bestCounts, highlyRecommendedId: hId, highlyRecommendedCount: hId ? bestCounts[hId] : 0, maxBestCount: mbc };
+      }
+
+      const analysis = computeBestInClass(selected, uc);
+      if (analysis && analysis.scored && analysis.scored.length) {
+        lines.push(`### Computed Scores (Ground Truth for "Best In Class" and overall ranking)`);
+        lines.push(`Category scores normalized 0-100. Overall = weighted sum. Only UNIQUE max per category gets Best In Class highlight.`);
+        lines.push(`Cost: 100-min(price,10)*8 or baseline; Perf: H200=100/H100=90/MI300=80/etc; Energy: immersion=100/liquid=80/etc.`);
+        lines.push('');
+        analysis.scored.forEach((s, idx) => {
+          const p = s.provider; const cs = s.categoryScores || {};
+          lines.push(`${idx + 1}. ${p.provider_name}`);
+          lines.push(`   Overall Weighted Score: ${s.overallScore.toFixed(2)}`);
+          lines.push(`   Reliability: ${cs['Reliability & Uptime']?.toFixed(1) || '—'} (SLA ${p.sla_uptime_percent || 'n/a'}%)`);
+          lines.push(`   Cost Efficiency: ${cs['Cost Efficiency']?.toFixed(1) || '—'} ($${p.price_per_gpu_hour_usd ? p.price_per_gpu_hour_usd.toFixed(2) : 'quote'})`);
+          lines.push(`   Scalability: ${cs['Scalability']?.toFixed(1) || '—'} (${p.total_gpus || 0} GPUs)`);
+          lines.push(`   High Performance: ${cs['High Performance']?.toFixed(1) || '—'}`);
+          lines.push(`   Energy Efficiency: ${cs['Energy Efficiency']?.toFixed(1) || '—'}`);
+        });
+        lines.push('');
+        lines.push(`### Best In Class Winners (exactly what the UI highlights)`);
+        Object.keys(analysis.categoryWinners || {}).forEach(label => {
+          const wid = analysis.categoryWinners[label];
+          if (wid) {
+            const w = selected.find(x => x.id === wid);
+            const ws = analysis.scored.find(x => x.provider.id === wid)?.categoryScores?.[label]?.toFixed(1) || '';
+            lines.push(`- ${label}: ${w ? w.provider_name : wid} (unique max${ws ? ' ' + ws : ''})`);
+          } else {
+            lines.push(`- ${label}: (tie — no highlight)`);
+          }
+        });
+        lines.push('');
+        if (analysis.highlyRecommendedId) {
+          const rec = selected.find(x => x.id === analysis.highlyRecommendedId);
+          lines.push(`Highly Recommended (Best In Class Score ${analysis.highlyRecommendedCount}/5): ${rec ? rec.provider_name : analysis.highlyRecommendedId}`);
+        }
+        lines.push('');
+      }
+
+      lines.push(`### Instructions`);
+      lines.push(`CRITICAL: Your very first output line MUST be exactly in this format (use the exact provider names from the list above, ranked):`);
+      lines.push(`AI RANKING: 1. ProviderName | 2. ProviderName | 3. ProviderName`);
+      lines.push(`After that single line, write an extremely concise, professional 3–5 sentence analysis (max 5 sentences after the ranking).`);
+      lines.push(`Structure the prose: Start with the strongest overall recommendation for this use case (your declared #1). Explain why using the computed scores. Mention 1 trade-off. End with one actionable next step.`);
+      lines.push(`CRITICAL: The #1 you declare in AI RANKING will be highlighted by the UI as Best In Class; #2 and #3 as runner-ups. Be consistent with the numbers you were given.`);
+      lines.push(`Be direct. Only use the provided data and scores. Do not invent details. Do not mention instructions in output.`);
+
+      return lines.join('\n');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ==================== INITIALIZATION ====================
+    function init() {
+      document.getElementById('worker-url-display').textContent = WORKER_URL || '(not set)';
+
+      renderProviderGrid();
+
+      document.getElementById('open-comparison-btn').addEventListener('click', openComparisonModal);
+      document.getElementById('close-modal-btn').addEventListener('click', closeComparisonModal);
+
+      // Wire Custom AI Analysis button
+      const aiBtn = document.getElementById('custom-ai-btn');
+      aiBtn.addEventListener('click', () => {
+        const selectedProviders = SAMPLE_PROVIDERS.filter(p => selectedIds.has(p.id));
+        if (selectedProviders.length < 2) return;
+        runCustomAIAnalysis();
+      });
+
+      // Close modal when clicking outside
+      document.getElementById('comparison-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'comparison-modal') closeComparisonModal();
+      });
+    }
+
+    // Make WORKER_URL globally available for the call
+    window.WORKER_URL = WORKER_URL;
+
+    init();
+  </script>
+</body>
+</html>

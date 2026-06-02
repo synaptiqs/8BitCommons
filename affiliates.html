@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlopSource — Provider Affiliate &amp; Referral Programs</title>
+  <style>
+    :root {
+      --bg: #0a1628;
+      --surface: #0f1f38;
+      --card: #162240;
+      --border: #1e3a5f;
+      --accent: #38bdf8;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --text: #e2e8f0;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; padding: 2rem; }
+    h1 { font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem; }
+    .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+    .section-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 1rem; font-weight: 600; color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem; margin: 2rem 0 1rem;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.15rem 0.6rem; border-radius: 9999px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+    .badge-tier1 { background: #064e3b; color: #34d399; border: 1px solid #065f46; }
+    .badge-tier2 { background: #1c3c5e; color: #38bdf8; border: 1px solid #1e4976; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th {
+      background: var(--surface); color: var(--muted);
+      text-align: left; padding: 0.6rem 0.8rem;
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border); position: sticky; top: 0;
+    }
+    td { padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:hover td { background: rgba(56,189,248,0.04); }
+    .provider-name { font-weight: 600; color: #fff; }
+    .provider-type { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
+    .commission { font-weight: 700; color: var(--green); }
+    .link { color: var(--accent); text-decoration: none; font-size: 0.82rem; }
+    .link:hover { text-decoration: underline; }
+    .note { color: var(--muted); font-size: 0.78rem; line-height: 1.4; }
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 0.75rem; padding: 1rem 1.25rem;
+    }
+    .stat-num { font-size: 1.6rem; font-weight: 700; color: #fff; }
+    .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+    .warning { font-size: 0.75rem; color: #fbbf24; margin-top: 0.2rem; }
+    .subtle-note {
+      margin-top: 2.5rem;
+      text-align: center;
+      font-size: 0.6rem;
+      color: #475569;
+      opacity: 0.35;
+      letter-spacing: 0.02em;
+    }
+    .subtle-note a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .subtle-note a:hover {
+      opacity: 0.6;
+    }
+    @media (max-width: 768px) {
+      .stat-grid { grid-template-columns: repeat(2,1fr); }
+      body { padding: 1rem; }
+      table { font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div style="margin-bottom: 1rem;">
+  <a href="index.html" style="color: #38bdf8; text-decoration: none; font-size: 0.9rem;">← Back to FlopSource Home</a>
+</div>
+
+<h1>FlopSource — Provider Affiliate &amp; Referral Programs</h1>
+<p class="subtitle">Only programs with real monetary rewards (cash or cash-equivalent credits). Last updated May 31, 2026.</p>
+
+<!-- SUMMARY STATS -->
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-num">11</div>
+    <div class="stat-label">Cash-Paying Affiliate Programs</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">5</div>
+    <div class="stat-label">High-Value Credit Referral Programs</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:#f87171;">1</div>
+    <div class="stat-label">Explicitly No Affiliate (TensorDock)</div>
+  </div>
+</div>
+
+<!-- CASH AFFILIATE PROGRAMS -->
+<div class="section-header">
+  <span class="badge badge-tier1">● Cash / Revenue Share</span>
+  Best for Monetization
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Provider</th>
+      <th>Reward</th>
+      <th>Details</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <div class="provider-name">RunPod</div>
+        <div class="provider-type">GPU Cloud</div>
+      </td>
+      <td><span class="commission">10% cash</span> (after 25 referrals)</td>
+      <td>10% on spend via PartnerStack. Referral tier also available (credits).</td>
+      <td><a class="link" href="https://www.runpod.io/referral-and-affiliate-program" target="_blank">runpod.io/referral-and-affiliate-program</a></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">Vast.ai</div>
+        <div class="provider-type">GPU Cloud (Marketplace)</div>
+      </td>
+      <td><span class="commission">3% lifetime</span></td>
+      <td>3% of referred users' lifetime spend. 75% cash-out via Stripe/PayPal/Wise.</td>
+      <td><a class="link" href="https://docs.vast.ai/guides/reference/referral-program" target="_blank">docs.vast.ai — referral program</a></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">Hivelocity</div>
+        <div class="provider-type">Bare-Metal</div>
+      </td>
+      <td><span class="commission">10% for life</span></td>
+      <td>10% recurring commission. Reseller tier up to 45%.</td>
+      <td><a class="link" href="https://www.hivelocity.net/referral/" target="_blank">hivelocity.net/referral</a></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">PhoenixNAP</div>
+        <div class="provider-type">Bare-Metal</div>
+      </td>
+      <td><span class="commission">10% recurring or $75+ one-time</span></td>
+      <td>Choose recurring or lump sum. Min $25 payout.</td>
+      <td><a class="link" href="https://phoenixnap.com/affiliates" target="_blank">phoenixnap.com/affiliates</a></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">Vultr</div>
+        <div class="provider-type">Bare-Metal</div>
+      </td>
+      <td><span class="commission">Up to $100 per referral</span> (tiered 10-35%)</td>
+      <td>Strong referral program. 30-day cookie.</td>
+      <td><a class="link" href="https://www.vultr.com/company/referral-program/" target="_blank">vultr.com/referral-program</a></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">IONOS</div>
+        <div class="provider-type">Bare-Metal</div>
+      </td>
+      <td><span class="commission">Up to $300 per sale</span></td>
+      <td>CPA model. 45-day cookie. Paid after 60-day hold.</td>
+      <td><a class="link" href="https://www.ionos.com/agency-partner/affiliate" target="_blank">ionos.com/affiliate</a></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">Gcore</div>
+        <div class="provider-type">Edge</div>
+      </td>
+      <td><span class="commission">12% for 3 months</span></td>
+      <td>Per customer. Min €500 payout every 45 days.</td>
+      <td><a class="link" href="https://gcore.com/affiliate-program" target="_blank">gcore.com/affiliate-program</a></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">Massed Compute</div>
+        <div class="provider-type">GPU Cloud</div>
+      </td>
+      <td><span class="commission">Competitive % + 50% discount codes</span></td>
+      <td>Top affiliates reportedly earn thousands per month.</td>
+      <td><a class="link" href="https://massedcompute.com/home-old/affiliate-program/" target="_blank">massedcompute.com/affiliate-program</a></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">Cudo Compute</div>
+        <div class="provider-type">GPU Cloud</div>
+      </td>
+      <td><span class="commission">5% for 12 months</span></td>
+      <td>Best for IT/tech creators with large audiences.</td>
+      <td><a class="link" href="https://www.cudocompute.com/affiliates" target="_blank">cudocompute.com/affiliates</a></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">Google Cloud</div>
+        <div class="provider-type">Hyperscaler</div>
+      </td>
+      <td><span class="commission">5% via Rakuten (M365)</span></td>
+      <td>US only. No simple direct Azure affiliate.</td>
+      <td><a class="link" href="https://cloud.google.com/affiliate-program" target="_blank">cloud.google.com/affiliate-program</a></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">OVHcloud</div>
+        <div class="provider-type">Bare-Metal (EU)</div>
+      </td>
+      <td><span class="commission">$3–$137 per sale</span></td>
+      <td>45-day cookie. Strong in EU-GDPR jurisdictions.</td>
+      <td><a class="link" href="https://partner.ovhcloud.com/en/" target="_blank">partner.ovhcloud.com</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- CREDIT-BASED WITH REAL VALUE -->
+<div class="section-header">
+  <span class="badge badge-tier2">● Credit-Based (Monetizable)</span>
+  Real Value Referral Programs
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Provider</th>
+      <th>Referrer Reward</th>
+      <th>Referee Reward</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <div class="provider-name">Nebius</div>
+        <div class="provider-type">GPU Cloud (EU)</div>
+      </td>
+      <td><span class="commission">2.5% cash</span> to bank account</td>
+      <td>Enterprise deal negotiated</td>
+      <td>
+        <a class="link" href="https://nebius.com/referral" target="_blank">nebius.com/referral</a>
+        <div class="note">Actual cash (requires legal entity). Minimum 64-GPU deals. Up to 12 months commission.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">Salad</div>
+        <div class="provider-type">Edge (Consumer GPUs)</div>
+      </td>
+      <td>50% of referral earnings (capped in some promos)</td>
+      <td>2× earnings rate on first ~$4</td>
+      <td>
+        <a class="link" href="https://salad.com/affiliate" target="_blank">salad.com/affiliate</a>
+        <div class="note">Formal creator affiliate program available with custom codes and brand assets. Earnings convert to real money (PayPal/gift cards).</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">Hyperbolic</div>
+        <div class="provider-type">GPU Cloud</div>
+      </td>
+      <td>$5 credit + Partner 1% revenue (6 months)</td>
+      <td>$6 credit on first $5 spend</td>
+      <td>
+        <a class="link" href="https://www.hyperbolic.ai/blog/referral-program" target="_blank">hyperbolic.ai/blog/referral-program</a>
+        <div class="note">Partner program pays quarterly on GPU reservations. Good for enterprise deal referrals.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">Akamai Connected Cloud</div>
+        <div class="provider-type">Edge</div>
+      </td>
+      <td>$25 non-expiring credit</td>
+      <td>$100 credit (60 days)</td>
+      <td>
+        <a class="link" href="https://www.akamai.com/cloud/referral-program" target="_blank">akamai.com/cloud/referral-program</a>
+        <div class="note">Must spend $25 to activate. Referee must stay active 90 days + spend $25.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="provider-name">FluidStack</div>
+        <div class="provider-type">GPU Cloud</div>
+      </td>
+      <td>$5 per referral</td>
+      <td>$5–$50/month</td>
+      <td>
+        <a class="link" href="https://www.fluidstack.io/referrals-affiliates" target="_blank">fluidstack.io/referrals-affiliates</a>
+        <div class="note">Simple and straightforward. Good for building trust with audience.</div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SUBTLE INTERNAL NOTE -->
+<div class="subtle-note">
+  <a href="#" style="font-size: 0.55rem; color: #475569; opacity: 0.32;" title="Internal only">This is for the links the site may be participating in for now may make it available later if we can pyramid affiliate links.</a>
+</div>
+
+</body>
+</html>
