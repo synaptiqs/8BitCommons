@@ -455,21 +455,21 @@
   // ─────────────────────────────────────────────────────────────────────────────
 
   function showComparison(preferredUseCase = null) {
-    // Lead-gen gate: after the user has done 3 comparisons, prompt for email
-    // on the next attempt before showing the full comparison UI.
+    // Lead-gen gate: after the user has completed 3 comparisons, prompt for email
+    // before showing the 4th. Gate is checked BEFORE recording so it fires on attempt 4+, not 3.
     const gate = window.FlopSourceLeadGate;
     if (gate) {
-      // Record every user-initiated comparison attempt (even gated ones count toward the total)
-      if (typeof gate.recordComparisonUse === 'function') {
-        gate.recordComparisonUse();
-      }
-
       if (typeof gate.shouldPromptEmailForComparison === 'function' &&
           gate.shouldPromptEmailForComparison()) {
         // Show the shared email grabber first. When they submit, re-invoke
         // showComparison — the second time the gate check will pass because they now have an email.
         gate.requireThen(() => showComparison(preferredUseCase));
         return;
+      }
+
+      // Record the attempt only after passing the gate check.
+      if (typeof gate.recordComparisonUse === 'function') {
+        gate.recordComparisonUse();
       }
     }
 
@@ -614,7 +614,7 @@
       </div>
       <div style="display:flex; flex-wrap:wrap; gap:6px;" id="use-case-selector">
         ${Object.entries(useCases).map(([key, uc]) => {
-          const shouldShowActive = isRestoringPreviousUseCase && key === currentUseCase;
+          const shouldShowActive = key === currentUseCase;
           return `
             <button data-usecase="${key}" class="use-case-btn ${shouldShowActive ? 'active' : ''}" style="
               padding:4px 12px;
@@ -631,10 +631,8 @@
           `;
         }).join('')}
       </div>
-      <div id="use-case-description" style="font-size:0.7rem; color:var(--text-muted); margin-top:4px; ${isRestoringPreviousUseCase ? '' : 'font-style:italic;'}">
-        ${isRestoringPreviousUseCase
-          ? useCases[currentUseCase].description
-          : 'Select a use case above to apply specific weights and trigger AI analysis'}
+      <div id="use-case-description" style="font-size:0.7rem; color:var(--text-muted); margin-top:4px;">
+        ${useCases[currentUseCase].description}
       </div>
     `;
     body.appendChild(useCaseContainer);

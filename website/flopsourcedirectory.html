@@ -721,7 +721,7 @@
         navigator.clipboard.writeText(text).catch(() => {});
 
         // Open email client
-        window.location.href = `mailto:your-email@example.com?subject=${subject}&body=${body}`;
+        window.location.href = `mailto:hello@flopsource.com?subject=${subject}&body=${body}`;
 
         // Close modal
         setTimeout(() => {
@@ -760,16 +760,7 @@
       logoWrapper.onclick = function(e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-
-        const path = location.pathname;
-
-        if (path.includes('/website/')) {
-          // Served from inside the website/ folder (common when using website/serve.ps1)
-          window.location.href = '../index.html';
-        } else {
-          // Served from project root (recommended)
-          window.location.href = 'index.html';
-        }
+        window.location.href = 'https://flopsource.com';
       };
     }
 

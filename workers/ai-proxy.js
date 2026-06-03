@@ -29,12 +29,22 @@
  * ========================================================================
  */
 
+// Allowed origins for CORS. Add your CloudFront URL or custom subdomain here when live.
+const ALLOWED_ORIGINS = new Set([
+  'https://flopsource.com',
+  'https://www.flopsource.com',
+  'https://directory.flopsource.com',
+]);
+
 export default {
   async fetch(request, env) {
+    const origin = request.headers.get('Origin') || '';
+    const corsOrigin = ALLOWED_ORIGINS.has(origin) ? origin : 'https://flopsource.com';
     const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': corsOrigin,
       'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
+      'Vary': 'Origin',
     };
 
     // Handle CORS preflight
@@ -60,6 +70,15 @@ export default {
 
     try {
       const body = await request.json();
+
+      // Lead capture endpoint — logs to CF Dashboard (Workers > Logs).
+      // To persist: add a `LEADS` KV namespace binding and uncomment the KV line below.
+      if (url.pathname === '/lead') {
+        const { email, source, ts } = body;
+        console.log(`[LEAD] email=${email} source=${source || 'unknown'} ts=${ts || Date.now()}`);
+        // await env.LEADS?.put(email, JSON.stringify({ email, source, ts, capturedAt: new Date().toISOString() }));
+        return Response.json({ ok: true }, { headers: corsHeaders });
+      }
       const { model, messages, temperature = 0.4, max_tokens = 900 } = body;
 
       // === PRIMARY PATH: Cloudflare Workers AI (recommended) ===

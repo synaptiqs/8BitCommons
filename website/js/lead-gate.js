@@ -121,6 +121,14 @@
       errorEl.style.display = 'none';
       input.style.borderColor = '';
       captureEmail(val);
+
+      // Fire-and-forget: log lead to Cloudflare Worker (visible in CF Dashboard → Workers → Logs).
+      fetch('https://flopsourceadvisor.synaptiqs.workers.dev/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: val.trim().toLowerCase(), source: 'ai-consultation', ts: Date.now() })
+      }).catch(() => {});
+
       submitBtn.disabled = true;
       submitBtn.innerHTML = 'Opening…';
       setTimeout(() => {

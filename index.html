@@ -32,7 +32,7 @@
       <div class="flex items-center gap-4 text-sm">
         <a href="#why" class="text-slate-400 hover:text-slate-200 transition-colors">Why this matters</a>
         <a href="#for-providers" class="text-slate-400 hover:text-slate-200 transition-colors">For Providers</a>
-        <a href="website/flopsourcedirectory.html" 
+        <a data-directory-link href="https://directory.flopsource.com"
            class="px-5 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-sm font-medium transition-colors">
           Browse the Directory
         </a>
@@ -56,7 +56,7 @@
     </p>
 
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="website/flopsourcedirectory.html" 
+      <a data-directory-link href="https://directory.flopsource.com"
          class="inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-950 font-semibold rounded-xl hover:bg-slate-100 transition-colors text-lg">
         Open the Directory — Free
         <i class="fa-solid fa-arrow-right ml-2"></i>
@@ -152,7 +152,7 @@
   <div class="border-t border-slate-800 py-16">
     <div class="max-w-xl mx-auto text-center px-6">
       <h2 class="text-2xl font-semibold mb-4">Ready to cut through the noise?</h2>
-      <a href="website/flopsourcedirectory.html" 
+      <a data-directory-link href="https://directory.flopsource.com"
          class="inline-flex items-center justify-center mt-4 px-8 py-3.5 bg-white text-slate-950 font-semibold rounded-xl hover:bg-slate-100 transition-colors text-lg">
         Open the Directory — Free
         <i class="fa-solid fa-arrow-right ml-2"></i>
@@ -211,6 +211,126 @@
   </footer>
 
   <script>
+    // ── DIRECTORY LAUNCH STATE ──────────────────────────────────────────────
+    // Flip to true and redeploy once directory.flopsource.com is live.
+    const DIRECTORY_LIVE = false;
+    const DIRECTORY_URL  = 'https://directory.flopsource.com';
+
+    if (DIRECTORY_LIVE) {
+      document.querySelectorAll('[data-directory-link]').forEach(a => a.href = DIRECTORY_URL);
+    } else {
+      // Directory not yet live — intercept clicks and capture email instead.
+      document.querySelectorAll('[data-directory-link]').forEach(a => {
+        a.removeAttribute('href');
+        a.style.cursor = 'pointer';
+        a.addEventListener('click', e => { e.preventDefault(); showEarlyAccessModal(); });
+      });
+    }
+
+    function showEarlyAccessModal() {
+      if (document.getElementById('fs-early-access-overlay')) return;
+
+      const overlay = document.createElement('div');
+      overlay.id = 'fs-early-access-overlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(2,6,23,0.75);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;backdrop-filter:blur(4px);';
+
+      overlay.innerHTML = `
+        <div style="background:#0f172a;border:1px solid #1e293b;border-radius:20px;max-width:420px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.5);overflow:hidden;font-family:system-ui,-apple-system,sans-serif;">
+          <!-- Header -->
+          <div style="padding:20px 22px 16px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <svg width="24" height="24" viewBox="0 0 48 48">
+                <rect x="0" y="0" width="48" height="48" rx="11" fill="#0c1a2e" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.55"/>
+                <rect x="8" y="8" width="13" height="13" rx="3" fill="#bfdbfe"/>
+                <rect x="25" y="8" width="13" height="13" rx="3" fill="#bfdbfe"/>
+                <rect x="8" y="25" width="13" height="13" rx="3" fill="#bfdbfe"/>
+                <rect x="25" y="25" width="13" height="13" rx="3" fill="#bfdbfe"/>
+              </svg>
+              <span style="font-weight:600;font-size:0.95rem;color:#f1f5f9;">FlopSource Directory</span>
+            </div>
+            <button id="fs-modal-close" style="background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;padding:2px 6px;line-height:1;border-radius:6px;" aria-label="Close">×</button>
+          </div>
+          <!-- Body -->
+          <div id="fs-modal-body" style="padding:24px 24px 8px;">
+            <p style="font-size:1.05rem;font-weight:600;color:#f1f5f9;margin:0 0 6px;">Launching soon — get first access.</p>
+            <p style="font-size:0.85rem;color:#94a3b8;margin:0 0 18px;line-height:1.5;">The FlopSource directory is in final testing. Drop your work email and we'll notify you the moment it goes live.</p>
+            <input id="fs-modal-email" type="email" placeholder="you@company.com" autocomplete="email"
+              style="width:100%;padding:11px 14px;font-size:0.9rem;border:1px solid #334155;border-radius:10px;background:#1e293b;color:#f1f5f9;outline:none;box-sizing:border-box;"/>
+            <div id="fs-modal-error" style="font-size:0.75rem;color:#f87171;margin-top:6px;min-height:1em;display:none;"></div>
+          </div>
+          <!-- Footer -->
+          <div style="padding:14px 24px 20px;display:flex;flex-direction:column;gap:10px;">
+            <button id="fs-modal-submit" style="width:100%;padding:11px;background:#0ea5e9;color:#fff;font-size:0.9rem;font-weight:600;border:none;border-radius:10px;cursor:pointer;transition:background 0.15s;">
+              Notify Me When It's Live
+            </button>
+            <p style="font-size:0.68rem;color:#475569;margin:0;text-align:center;">No spam. One email when we launch.</p>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      const emailInput = overlay.querySelector('#fs-modal-email');
+      const submitBtn  = overlay.querySelector('#fs-modal-submit');
+      const errorEl    = overlay.querySelector('#fs-modal-error');
+      const closeBtn   = overlay.querySelector('#fs-modal-close');
+      const body       = overlay.querySelector('#fs-modal-body');
+
+      const close = () => overlay.remove();
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', function esc(e) {
+        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+      });
+
+      submitBtn.addEventListener('mouseover', () => submitBtn.style.background = '#0284c7');
+      submitBtn.addEventListener('mouseout',  () => submitBtn.style.background = '#0ea5e9');
+
+      setTimeout(() => emailInput.focus(), 60);
+
+      async function submit() {
+        const val = emailInput.value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+          errorEl.textContent = 'Please enter a valid email address.';
+          errorEl.style.display = 'block';
+          emailInput.style.borderColor = '#f87171';
+          emailInput.focus();
+          return;
+        }
+        errorEl.style.display = 'none';
+        emailInput.style.borderColor = '#334155';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving…';
+
+        // Fire-and-forget to Cloudflare Worker
+        fetch('https://flopsourceadvisor.synaptiqs.workers.dev/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: val.toLowerCase(), source: 'landing-waitlist', ts: Date.now() })
+        }).catch(() => {});
+
+        // Success state
+        body.innerHTML = `
+          <div style="text-align:center;padding:8px 0 16px;">
+            <div style="width:48px;height:48px;background:#0c2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <p style="font-size:1rem;font-weight:600;color:#f1f5f9;margin:0 0 6px;">You're on the list.</p>
+            <p style="font-size:0.83rem;color:#94a3b8;margin:0;line-height:1.5;">We'll email <strong style="color:#cbd5e1;">${val.toLowerCase()}</strong> the moment the directory goes live.</p>
+          </div>
+        `;
+        overlay.querySelector('div[style*="padding:14px"]').innerHTML = `
+          <button id="fs-modal-done" style="width:100%;padding:11px;background:#1e293b;color:#94a3b8;font-size:0.9rem;font-weight:500;border:1px solid #334155;border-radius:10px;cursor:pointer;">Close</button>
+        `;
+        overlay.querySelector('#fs-modal-done').addEventListener('click', close);
+      }
+
+      submitBtn.addEventListener('click', submit);
+      emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+    }
+
     // Self-contained large number formatter for the landing page
     function formatLargeNumber(num, decimals = 1) {
       if (num == null || isNaN(num)) return '—';
@@ -241,7 +361,7 @@
     // Load and display real GPU count from the directory data
     (async function loadLandingStats() {
       try {
-        const res = await fetch('../website/data/data_centers.json', { cache: 'no-store' });
+        const res = await fetch('website/data/data_centers.json', { cache: 'no-store' });
         if (!res.ok) throw new Error('Failed to load data');
         const data = await res.json();
         const providers = Array.isArray(data) ? data : (data.providers || []);

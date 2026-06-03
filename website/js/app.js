@@ -39,7 +39,7 @@
     if (window.FlopSourceComparison && typeof window.FlopSourceComparison.updateFloatingComparisonPanel === 'function') {
       window.FlopSourceComparison.updateFloatingComparisonPanel();
     } else if (typeof updateFloatingComparisonPanel === 'function') {
-      safeUpdateFloatingComparisonPanel();
+      updateFloatingComparisonPanel();
     }
   }
 

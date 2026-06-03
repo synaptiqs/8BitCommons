@@ -4,7 +4,7 @@ This repo is organized around a clear split between **marketing** and the **seri
 
 ## Current Folder Structure
 
-```
+```text
 /FlopSource
 ├── index.html                    ← Primary entry point: Marketing landing page (hero, stats, value props, For Providers + lead-gen CTAs)
 ├── affiliates.html               ← Clean reference page for monetizable affiliate/referral programs only
@@ -27,13 +27,17 @@ This repo is organized around a clear split between **marketing** and the **seri
 └── ...
 ```
 
-## Current Deployment Reality
+## Current Deployment Reality (June 2026)
 
-| Component                    | Current / Recommended Hosting          | Notes |
-|-----------------------------|----------------------------------------|-------|
-| Marketing Landing + Affiliates | Bluehost (or any static host)         | Root `index.html` + `affiliates.html` |
-| Directory Tool              | AWS S3 + CloudFront (planned)         | Contents of `website/` folder |
-| AI Features (Analysis + Consultation) | Cloudflare Workers               | `workers/ai-proxy.js` (already live) |
+| Component | Hosting | URL / Notes |
+|-----------|---------|-------------|
+| Marketing Landing + Affiliates | Bluehost **LIVE** | `flopsource.com` — files in `public_html/website_76edd621/` |
+| Directory Tool | AWS S3 + CloudFront **PENDING** | Target: `directory.flopsource.com` — S3 bucket `flopsource-directory--usw2-az1--x-s3` created |
+| AI Features | Cloudflare Workers **LIVE** | `flopsourceadvisor.synaptiqs.workers.dev` |
+
+**Bluehost document root:** `public_html/website_76edd621/` — upload files here, NOT to `public_html/` root.
+
+**Directory launch gate:** `index.html` has `const DIRECTORY_LIVE = false` — flip to `true` and redeploy to Bluehost when `directory.flopsource.com` is live. This switches the directory buttons from email-capture modal back to direct links.
 
 ## Key Architectural Points
 
