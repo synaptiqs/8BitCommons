@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FlopSource — AI Compute Infrastructure Directory</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="icon" href="website/favicon-dark.svg">
   <style>
     :root { --accent: #38bdf8; }
@@ -18,12 +18,14 @@
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="flex items-center gap-2">
-          <svg width="28" height="28" viewBox="0 0 48 48" style="flex-shrink: 0;">
-            <rect x="0" y="0" width="48" height="48" rx="11" fill="#0c1a2e" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.55"/>
-            <rect x="8" y="8" width="13" height="13" rx="3" fill="#bfdbfe"/>
-            <rect x="25" y="8" width="13" height="13" rx="3" fill="#bfdbfe"/>
-            <rect x="8" y="25" width="13" height="13" rx="3" fill="#bfdbfe"/>
-            <rect x="25" y="25" width="13" height="13" rx="3" fill="#bfdbfe"/>
+          <svg width="28" height="28" viewBox="0 0 28 28" style="flex-shrink: 0;" role="img" aria-label="FlopSource">
+            <rect width="28" height="28" rx="6.2" fill="#0c1a2e"/>
+            <rect x="3.5" y="3.5"  width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
+            <rect x="11"   y="3.5"  width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
+            <rect x="18.5" y="3.5"  width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
+            <rect x="3.5"  y="11"   width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
+            <rect x="11"   y="11"   width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
+            <rect x="3.5"  y="18.5" width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
           </svg>
           <span class="font-semibold text-xl tracking-tight">FlopSource</span>
         </div>
@@ -33,7 +35,7 @@
         <a href="#why" class="text-slate-400 hover:text-slate-200 transition-colors">Why this matters</a>
         <a href="#for-providers" class="text-slate-400 hover:text-slate-200 transition-colors">For Providers</a>
         <a data-directory-link href="https://directory.flopsource.com"
-           class="px-5 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-sm font-medium transition-colors">
+           class="p-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-sm font-medium transition-colors">
           Browse the Directory
         </a>
       </div>
@@ -55,14 +57,14 @@
       Enterprise teams use FlopSource to cut through vendor noise, compare real GPU clouds and bare-metal providers, and make faster, more confident infrastructure decisions.
     </p>
 
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto">
       <a data-directory-link href="https://directory.flopsource.com"
-         class="inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-950 font-semibold rounded-xl hover:bg-slate-100 transition-colors text-lg">
+         class="inline-flex items-center justify-center p-2 bg-white text-slate-950 font-semibold rounded-xl hover:bg-slate-100 transition-colors text-lg">
         Open the Directory — Free
         <i class="fa-solid fa-arrow-right ml-2"></i>
       </a>
-      <a href="#for-providers" 
-         class="inline-flex items-center justify-center px-8 py-3.5 border border-slate-700 hover:bg-slate-900 rounded-xl transition-colors text-lg">
+      <a href="#for-providers"
+         class="inline-flex items-center justify-center p-2 border border-slate-700 hover:bg-slate-900 rounded-xl transition-colors text-lg">
         For AI Compute Providers
       </a>
     </div>
@@ -153,7 +155,7 @@
     <div class="max-w-xl mx-auto text-center px-6">
       <h2 class="text-2xl font-semibold mb-4">Ready to cut through the noise?</h2>
       <a data-directory-link href="https://directory.flopsource.com"
-         class="inline-flex items-center justify-center mt-4 px-8 py-3.5 bg-white text-slate-950 font-semibold rounded-xl hover:bg-slate-100 transition-colors text-lg">
+         class="inline-flex items-center justify-center mt-4 p-2 bg-white text-slate-950 font-semibold rounded-xl hover:bg-slate-100 transition-colors text-lg">
         Open the Directory — Free
         <i class="fa-solid fa-arrow-right ml-2"></i>
       </a>
@@ -239,12 +241,14 @@
           <!-- Header -->
           <div style="padding:20px 22px 16px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;">
             <div style="display:flex;align-items:center;gap:10px;">
-              <svg width="24" height="24" viewBox="0 0 48 48">
-                <rect x="0" y="0" width="48" height="48" rx="11" fill="#0c1a2e" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.55"/>
-                <rect x="8" y="8" width="13" height="13" rx="3" fill="#bfdbfe"/>
-                <rect x="25" y="8" width="13" height="13" rx="3" fill="#bfdbfe"/>
-                <rect x="8" y="25" width="13" height="13" rx="3" fill="#bfdbfe"/>
-                <rect x="25" y="25" width="13" height="13" rx="3" fill="#bfdbfe"/>
+              <svg width="24" height="24" viewBox="0 0 28 28" role="img" aria-label="FlopSource">
+                <rect width="28" height="28" rx="6.2" fill="#0c1a2e"/>
+                <rect x="3.5" y="3.5"  width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
+                <rect x="11"   y="3.5"  width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
+                <rect x="18.5" y="3.5"  width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
+                <rect x="3.5"  y="11"   width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
+                <rect x="11"   y="11"   width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
+                <rect x="3.5"  y="18.5" width="6.5" height="6.5" rx="1.43" fill="#38bdf8"/>
               </svg>
               <span style="font-weight:600;font-size:0.95rem;color:#f1f5f9;">FlopSource Directory</span>
             </div>

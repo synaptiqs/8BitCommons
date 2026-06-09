@@ -32,7 +32,7 @@ This repo is organized around a clear split between **marketing** and the **seri
 | Component | Hosting | URL / Notes |
 |-----------|---------|-------------|
 | Marketing Landing + Affiliates | Bluehost **LIVE** | `flopsource.com` — files in `public_html/website_76edd621/` |
-| Directory Tool | AWS S3 + CloudFront **PENDING** | Target: `directory.flopsource.com` — S3 bucket `flopsource-directory--usw2-az1--x-s3` created |
+| Directory Tool | AWS S3 + CloudFront **PENDING** | Target: `directory.flopsource.com` — S3 bucket `flopsource-compute-directory` |
 | AI Features | Cloudflare Workers **LIVE** | `flopsourceadvisor.synaptiqs.workers.dev` |
 
 **Bluehost document root:** `public_html/website_76edd621/` — upload files here, NOT to `public_html/` root.

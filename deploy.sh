@@ -3,8 +3,7 @@
 # deploy.sh
 # FlopSource — Production Frontend Deployment
 #
-# Syncs the static corporate directory to AWS S3 for hosting.
-# Designed for use by infrastructure / DevOps teams.
+# Syncs the static directory app to AWS S3 for hosting via CloudFront.
 #
 # Usage:
 #   ./deploy.sh                    # Normal sync
@@ -16,17 +15,12 @@ set -euo pipefail
 # ============================================
 # CONFIGURATION
 # ============================================
-BUCKET_NAME="8bitcommons--usw2-az1--x-s3"
-# NOTE: This is the legacy bucket name. We are keeping it for now.
-# No migration to a FlopSource-named bucket will occur until the Directory is mature.
-
-# This is an S3 Express One Zone Directory Bucket (us-west-2, AZ1)
+BUCKET_NAME="flopsource-compute-directory"
 REGION="us-west-2"
-ENDPOINT_URL="https://s3express-usw2-az1.us-west-2.amazonaws.com"
 
 SOURCE_DIR="website"
 AWS_PROFILE="${AWS_PROFILE:-default}"
-CACHE_CONTROL="public, max-age=31536000, immutable"   # 1 year for static assets (adjust if needed)
+CACHE_CONTROL="public, max-age=31536000, immutable"
 
 # Optional CloudFront Distribution ID for invalidation
 CLOUDFRONT_DISTRIBUTION_ID="${CLOUDFRONT_DISTRIBUTION_ID:-}"
@@ -78,16 +72,12 @@ if [ ! -d "${SOURCE_DIR}" ]; then
   exit 1
 fi
 
-# Verify bucket exists and we have access (S3 Express One Zone)
 if ! aws s3 ls "s3://${BUCKET_NAME}" \
     --region "${REGION}" \
-    --endpoint-url "${ENDPOINT_URL}" \
     --profile "${AWS_PROFILE}" &> /dev/null; then
   echo "❌ Error: Cannot access s3://${BUCKET_NAME}."
-  echo "   - This is an S3 Express One Zone Directory Bucket"
-  echo "   - Check that the bucket exists in us-west-2 (AZ1)"
-  echo "   - Verify your AWS credentials have s3express:CreateSession + s3:PutObject permissions"
-  echo "   - Note: S3 Express buckets do NOT support traditional Static Website Hosting"
+  echo "   - Check that the bucket exists in ${REGION}"
+  echo "   - Verify your AWS credentials have s3:PutObject, s3:DeleteObject, s3:ListBucket permissions"
   exit 1
 fi
 
@@ -95,19 +85,23 @@ echo "✅ Pre-flight checks passed."
 echo
 
 # ============================================
-# EXECUTE SYNC (S3 Express One Zone)
+# EXECUTE SYNC
 # ============================================
 SYNC_CMD=(
   aws s3 sync "${SOURCE_DIR}" "s3://${BUCKET_NAME}"
   --region "${REGION}"
-  --endpoint-url "${ENDPOINT_URL}"
   --profile "${AWS_PROFILE}"
   --delete
   --cache-control "${CACHE_CONTROL}"
   --exclude "*.sh"
+  --exclude "*.bat"
+  --exclude "*.ps1"
+  --exclude "*.md"
   --exclude ".DS_Store"
   --exclude "*.git*"
   --exclude "node_modules/*"
+  --exclude "temp-*"
+  --exclude "usage-example*"
 )
 
 if [ "$DRY_RUN" = true ]; then
@@ -148,18 +142,7 @@ echo
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Deployment finished successfully."
 echo
-echo "⚠️  IMPORTANT (S3 Express One Zone):"
-echo "   This bucket type does NOT support S3 Static Website Hosting."
-echo "   You cannot use the traditional s3-website endpoint."
-echo
-echo "Recommended production architecture:"
-echo "   1. Keep assets in this S3 Express bucket (high performance)"
-echo "   2. Front it with CloudFront using the S3 Express bucket as origin"
-echo "   3. Use CloudFront Functions or OAC for proper content-type handling"
-echo
 echo "Next steps:"
-echo "   • Test by accessing objects directly via the S3 Express endpoint"
-echo "   • Create a CloudFront distribution pointing at this bucket"
-echo "   • If using CloudFront, run with --invalidate after updating CLOUDFRONT_DISTRIBUTION_ID"
-echo
-echo "To preview changes without uploading: ./deploy.sh --dry-run"
+echo "   • Create a CloudFront distribution pointing at this bucket (if not done)"
+echo "   • Run with --invalidate after updating CLOUDFRONT_DISTRIBUTION_ID"
+echo "   • To preview changes without uploading: ./deploy.sh --dry-run"

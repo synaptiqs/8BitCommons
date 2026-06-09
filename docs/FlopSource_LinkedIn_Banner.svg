@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- FlopSource LinkedIn Company Banner -->
+<!-- Export at 1128 x 191px (LinkedIn recommended size) -->
+<!-- Open in browser, Figma, or Inkscape — export as PNG for upload -->
+<svg width="1128" height="191" viewBox="0 0 680 156" xmlns="http://www.w3.org/2000/svg">
+  <title>FlopSource — One source. Every FLOP. Your advantage.</title>
+  <desc>Find the right AI compute. | Get found by enterprise buyers. flopsource.com — Waitlist open</desc>
+
+  <defs>
+    <pattern id="pg" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="0.75" fill="#334155"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="680" height="156" fill="#0f172a"/>
+  <!-- Dot grid -->
+  <rect width="680" height="156" fill="url(#pg)" opacity="0.55"/>
+
+  <!-- Decorative circuit traces (top right) -->
+  <g opacity="0.13" stroke="#38bdf8" stroke-width="0.8" fill="none">
+    <line x1="572" y1="14" x2="636" y2="14"/>
+    <line x1="636" y1="14" x2="656" y2="34"/>
+    <line x1="656" y1="34" x2="656" y2="76"/>
+    <line x1="596" y1="34" x2="656" y2="34"/>
+    <line x1="596" y1="14" x2="596" y2="56"/>
+    <line x1="596" y1="56" x2="626" y2="56"/>
+    <line x1="626" y1="56" x2="626" y2="76"/>
+    <circle cx="596" cy="34" r="2.5" fill="#38bdf8"/>
+    <circle cx="656" cy="34" r="2.5" fill="#38bdf8"/>
+    <circle cx="596" cy="56" r="2.5" fill="#38bdf8"/>
+    <circle cx="626" cy="56" r="2.5" fill="#38bdf8"/>
+    <circle cx="636" cy="14" r="2.5" fill="#38bdf8"/>
+  </g>
+
+  <!-- Center vertical divider -->
+  <line x1="340" y1="22" x2="340" y2="106" stroke="#1e3a5f" stroke-width="0.75"/>
+
+  <!-- LEFT COLUMN: Buyers -->
+  <text x="55" y="38" font-size="11" fill="#475569"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        letter-spacing="1.8">For buyers</text>
+  <text x="55" y="66" font-size="20" fill="#f1f5f9"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-weight="500">Find the right</text>
+  <text x="55" y="90" font-size="20" fill="#38bdf8"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-weight="500">AI compute.</text>
+
+  <!-- RIGHT COLUMN: Providers -->
+  <text x="368" y="38" font-size="11" fill="#475569"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        letter-spacing="1.8">For providers</text>
+  <text x="368" y="66" font-size="20" fill="#f1f5f9"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-weight="500">Get found by</text>
+  <text x="368" y="90" font-size="20" fill="#38bdf8"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-weight="500">enterprise buyers.</text>
+
+  <!-- Horizontal rule -->
+  <line x1="40" y1="108" x2="640" y2="108" stroke="#1e293b" stroke-width="0.5"/>
+
+  <!-- URL and CTA -->
+  <text text-anchor="middle" x="340" y="127" font-size="13"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">
+    <tspan fill="#38bdf8" font-weight="500">flopsource.com</tspan>
+    <tspan fill="#94a3b8"> — Waitlist open</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="340" y="145" text-anchor="middle" font-size="10.5" fill="#3d5166"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        letter-spacing="1.2">One source. Every FLOP. Your advantage.</text>
+
+</svg>

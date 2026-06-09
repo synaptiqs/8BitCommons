@@ -156,10 +156,10 @@ Possible features (prioritization TBD):
 ## Phase 4: Production Readiness & Hosting
 
 ### Hosting Reality
-- Current bucket: `8bitcommons--usw2-az1--x-s3` (S3 Express One Zone).
-- We are keeping the current bucket for now. No migration will happen until the FlopSource Directory is mature.
+
+- Current bucket: `flopsource-compute-directory` (S3 Express One Zone).
 - S3 Express One Zone has limitations for static website hosting.
-- Recommended long-term path (once we decide to migrate): CloudFront in front of the S3 Express bucket, or a move to a regular S3 bucket + CloudFront.
+- Recommended path: CloudFront in front of this S3 Express bucket, or a move to a regular S3 bucket + CloudFront.
 
 ### Tasks
 - Proper CloudFront setup with correct cache headers and origin configuration

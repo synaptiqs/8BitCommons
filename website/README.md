@@ -48,9 +48,7 @@ Use the root-level `deploy.sh` script:
 ./deploy.sh --invalidate       # Deploy + CloudFront invalidation
 ```
 
-**Current target:** `8bitcommons--usw2-az1--x-s3` (S3 Express One Zone Directory Bucket in us-west-2-az1)
-
-> **Note:** We are keeping this existing bucket for now. No migration to a new bucket will happen until the FlopSource Directory is considered mature.
+**Current target:** `flopsource-compute-directory` (S3 Express One Zone Directory Bucket in us-west-2-az1)
 
 **Important:** S3 Express One Zone buckets **do not support** traditional Static Website Hosting. You must serve this frontend through **CloudFront** using the S3 Express bucket as the origin.
 

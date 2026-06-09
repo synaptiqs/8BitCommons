@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- FlopSource — LinkedIn Post 1 Visual v2 -->
+<!-- Export at 1080 x 1350px (4:5 ratio) for LinkedIn feed -->
+<svg width="1080" height="1350" viewBox="0 0 680 720" xmlns="http://www.w3.org/2000/svg">
+<title>FlopSource — 100+ AI compute providers. Zero trustworthy directories.</title>
+<desc>The AI compute gap. FlopSource: 29 verified providers, updated continuously. One source. Every FLOP. Your advantage.</desc>
+<defs>
+  <pattern id="dg" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+    <circle cx="12" cy="12" r="0.75" fill="#334155"/>
+  </pattern>
+</defs>
+<rect width="680" height="720" fill="#0f172a"/>
+<rect width="680" height="720" fill="url(#dg)" opacity="0.45"/>
+<line x1="44" y1="126" x2="44" y2="308" stroke="#38bdf8" stroke-width="1.5" opacity="0.2"/>
+<line x1="636" y1="126" x2="636" y2="308" stroke="#38bdf8" stroke-width="1.5" opacity="0.2"/>
+<text x="340" y="52" text-anchor="middle" font-size="11" fill="#1e3a5f"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+      letter-spacing="3">FLOPSOURCE</text>
+<text x="340" y="285" text-anchor="middle" font-size="170" fill="#38bdf8"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+      font-weight="700">100+</text>
+<text x="340" y="328" text-anchor="middle" font-size="26" fill="#e2e8f0"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">AI compute providers.</text>
+<text x="340" y="364" text-anchor="middle" font-size="26" fill="#f87171"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Zero trustworthy directories.</text>
+<text x="340" y="396" text-anchor="middle" font-size="13" fill="#64748b"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+      font-style="italic">Until now.</text>
+<line x1="40" y1="418" x2="640" y2="418" stroke="#1e293b" stroke-width="0.5"/>
+<text x="340" y="458" text-anchor="middle" font-size="21" fill="#94a3b8"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">"The real cost isn't the compute.</text>
+<text x="340" y="488" text-anchor="middle" font-size="21" fill="#94a3b8"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">It's the hours your team burns</text>
+<text x="340" y="518" text-anchor="middle" font-size="21" fill="#38bdf8"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">vetting providers from scratch."</text>
+<line x1="40" y1="547" x2="640" y2="547" stroke="#1e293b" stroke-width="0.5"/>
+<text x="340" y="580" text-anchor="middle" font-size="13" fill="#475569"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">29 verified providers. Updated continuously. Zero fake data.</text>
+<text x="340" y="616" text-anchor="middle" font-size="20" fill="#f1f5f9"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+      font-weight="500">One source. Every FLOP. Your advantage.</text>
+<text x="340" y="651" text-anchor="middle" font-size="15" fill="#38bdf8"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">flopsource.com — Join the waitlist</text>
+</svg>
