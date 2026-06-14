@@ -122,7 +122,8 @@ def build():
         console.print(f"[dim]Loaded {len(overrides)} manual overrides[/dim]")
 
     # Collect IDs that should be skipped (set by _skip: true in overrides)
-    skip_ids = {pid for pid, data in overrides.items() if data.get("_skip") is True}
+    # Only inspect dict entries — ignore metadata keys like _comment, _usage, _add_providers
+    skip_ids = {pid for pid, data in overrides.items() if isinstance(data, dict) and data.get("_skip") is True}
     if skip_ids:
         console.print(f"[dim]Skipping {len(skip_ids)} provider(s) via _skip flag: {', '.join(sorted(skip_ids))}[/dim]")
 
@@ -141,7 +142,7 @@ def build():
                 provider = scraper.run()
                 if provider:
                     # Apply overrides if present (skip _skip and _add_providers keys)
-                    if provider.id in overrides:
+                    if provider.id in overrides and isinstance(overrides[provider.id], dict):
                         override_data = {k: v for k, v in overrides[provider.id].items()
                                          if not k.startswith("_")}
                         for key, value in override_data.items():

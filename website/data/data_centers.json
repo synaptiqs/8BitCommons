@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-05-31T23:03:51.738226",
+  "generated_at": "2026-06-09T02:54:28.715616",
   "providers": [
     {
       "id": "coreweave",
@@ -24,7 +24,7 @@
         "ISO 27001"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://www.coreweave.com/",
         "https://www.coreweave.com/pricing",
@@ -53,14 +53,15 @@
       "certifications": [
         "SOC 2 Type II"
       ],
-      "availability_status": "2-6 weeks",
-      "last_verified": "2026-05-31",
+      "availability_status": "Contact for availability",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://lambdalabs.com/",
-        "https://lambdalabs.com/service/gpu-cloud"
+        "https://lambdalabs.com/service/gpu-cloud",
+        "https://cloud.lambdalabs.com/api/v1/instance-types"
       ],
       "notes": null,
-      "data_quality": "high"
+      "data_quality": "medium"
     },
     {
       "id": "crusoe",
@@ -83,10 +84,10 @@
         "ISO 27001"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://crusoeenergy.com/",
-        "https://crusoeenergy.com/cloud"
+        "https://crusoecloud.com/pricing"
       ],
       "notes": "Strong in immersion cooling and stranded energy / behind-the-meter power",
       "data_quality": "high"
@@ -113,12 +114,13 @@
         "SOC 2 Type II"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://metal.equinix.com/"
+        "https://metal.equinix.com/",
+        "https://api.equinix.com/metal/v1/plans"
       ],
       "notes": null,
-      "data_quality": "high"
+      "data_quality": "medium"
     },
     {
       "id": "runpod",
@@ -135,17 +137,18 @@
       "website": "https://www.runpod.io",
       "total_gpus": 32000,
       "network_bandwidth_gbps": 800,
-      "interconnect": "200-400GbE",
+      "interconnect": "200\u2013400GbE",
       "sla_uptime_percent": 99.9,
-      "price_per_gpu_hour_usd": 1.89,
+      "price_per_gpu_hour_usd": 3.19,
       "certifications": [
         "SOC 2"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://www.runpod.io/",
-        "https://www.runpod.io/pricing"
+        "https://www.runpod.io/gpu-instance/pricing",
+        "https://www.runpod.io/gpu-instance/pricing"
       ],
       "notes": null,
       "data_quality": "high"
@@ -169,16 +172,16 @@
       "network_bandwidth_gbps": 400,
       "interconnect": "Varies by host (100-400GbE + NVLink on many)",
       "sla_uptime_percent": 99.5,
-      "price_per_gpu_hour_usd": 1.468,
+      "price_per_gpu_hour_usd": 1.534,
       "certifications": [],
-      "availability_status": "Live marketplace (3 H100-class offers in sample)",
-      "last_verified": "2026-05-31",
+      "availability_status": "Live marketplace (10 H100-class offers in sample)",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://vast.ai/",
         "https://vast.ai/api/v0/bundles/",
         "https://vast.ai/api/v0/bundles/"
       ],
-      "notes": "Live marketplace \u2014 64 offers sampled. H100-class visible in sample: 3. Prices fluctuate constantly. Avg reliability on modern GPUs in sample: 0.9897. Use for flexible / spot workloads. Enterprise SLAs available via selected hosts.",
+      "notes": "Live marketplace \u2014 64 offers sampled. H100-class visible in sample: 10. Prices fluctuate constantly. Avg reliability on modern GPUs in sample: 0.9927. Use for flexible / spot workloads. Enterprise SLAs available via selected hosts.",
       "data_quality": "medium"
     },
     {
@@ -203,9 +206,10 @@
         "SOC 2"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://www.ovhcloud.com/en/bare-metal/"
+        "https://www.ovhcloud.com/en/bare-metal/",
+        "https://ca.api.ovh.com/v1/order/catalog/public/baremetalServers?ovhSubsidiary=US"
       ],
       "notes": null,
       "data_quality": "high"
@@ -232,7 +236,7 @@
         "SOC 2 Type II"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://nebius.com/"
       ],
@@ -253,7 +257,7 @@
       "website": "https://www.akamai.com/products/connected-cloud",
       "total_gpus": 1800,
       "network_bandwidth_gbps": 200,
-      "interconnect": "100-200GbE",
+      "interconnect": "100\u2013200GbE",
       "sla_uptime_percent": 99.99,
       "price_per_gpu_hour_usd": 4.1,
       "certifications": [
@@ -262,12 +266,13 @@
         "FedRAMP"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://www.akamai.com/products/connected-cloud"
+        "https://www.akamai.com/products/connected-cloud",
+        "https://api.linode.com/v4/linode/types"
       ],
       "notes": null,
-      "data_quality": "high"
+      "data_quality": "medium"
     },
     {
       "id": "gcore",
@@ -291,12 +296,12 @@
         "SOC 2"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://gcore.com/"
       ],
       "notes": null,
-      "data_quality": "medium"
+      "data_quality": "high"
     },
     {
       "id": "hetzner",
@@ -317,13 +322,15 @@
       "certifications": [
         "ISO 27001"
       ],
-      "availability_status": "2-4 weeks",
-      "last_verified": "2026-05-31",
+      "availability_status": "2\u20134 weeks",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://www.hetzner.com/"
+        "https://www.hetzner.com/",
+        "https://www.hetzner.com/cloud/gpu-servers",
+        "https://api.hetzner.cloud/v1/server_types?page=1&per_page=50"
       ],
       "notes": null,
-      "data_quality": "high"
+      "data_quality": "medium"
     },
     {
       "id": "scaleway",
@@ -344,13 +351,15 @@
       "certifications": [
         "ISO 27001"
       ],
-      "availability_status": "2-3 weeks",
-      "last_verified": "2026-05-31",
+      "availability_status": "2\u20133 weeks",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://www.scaleway.com/en/"
+        "https://www.scaleway.com/en/",
+        "https://www.scaleway.com/en/pricing/gpu/",
+        "https://api.scaleway.com/instance/v1/zones/fr-par-2/products/servers"
       ],
       "notes": null,
-      "data_quality": "high"
+      "data_quality": "medium"
     },
     {
       "id": "ionos",
@@ -374,12 +383,13 @@
         "SOC 2"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://www.ionos.com/"
+        "https://www.ionos.com/",
+        "https://www.ionos.com/servers/gpu-servers"
       ],
       "notes": null,
-      "data_quality": "medium"
+      "data_quality": "high"
     },
     {
       "id": "tensordock",
@@ -396,19 +406,20 @@
       "website": "https://tensordock.com",
       "total_gpus": 4200,
       "network_bandwidth_gbps": 400,
-      "interconnect": "200-400GbE",
+      "interconnect": "200\u2013400GbE",
       "sla_uptime_percent": 99.9,
       "price_per_gpu_hour_usd": 1.95,
       "certifications": [
         "SOC 2"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://tensordock.com/"
+        "https://tensordock.com/",
+        "https://marketplace.tensordock.com/api/v0/client/deploy/hostnodes"
       ],
       "notes": "Marketplace + dedicated. Good for smaller bursts.",
-      "data_quality": "high"
+      "data_quality": "medium"
     },
     {
       "id": "salad",
@@ -430,9 +441,10 @@
       "price_per_gpu_hour_usd": 0.45,
       "certifications": [],
       "availability_status": "Variable (consumer devices)",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://salad.com/"
+        "https://salad.com/",
+        "https://portal.salad.com/api/public/gpu-classes"
       ],
       "notes": "Consumer GPU sharing network (edge-style)",
       "data_quality": "medium"
@@ -459,9 +471,10 @@
         "SOC 2"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://www.fluidstack.io/"
+        "https://www.fluidstack.io/",
+        "https://www.fluidstack.io/pricing"
       ],
       "notes": null,
       "data_quality": "high"
@@ -471,9 +484,9 @@
       "provider_name": "Shadeform",
       "layer_type": "GPU Cloud",
       "hardware_architectures": [
-        "NVIDIA H100",
         "NVIDIA A100",
-        "AMD MI300X"
+        "NVIDIA H100",
+        "NVIDIA H200"
       ],
       "cooling_type": "Liquid",
       "jurisdiction_zone": "US-Federal",
@@ -486,9 +499,10 @@
       "price_per_gpu_hour_usd": 2.1,
       "certifications": [],
       "availability_status": "Immediate (via orchestration)",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://www.shadeform.ai/"
+        "https://www.shadeform.ai/",
+        "https://api.shadeform.ai/v1/instances/types"
       ],
       "notes": "GPU orchestration / multi-cloud routing layer",
       "data_quality": "medium"
@@ -510,16 +524,16 @@
       "network_bandwidth_gbps": 1600,
       "interconnect": "NVLink + 400GbE",
       "sla_uptime_percent": 99.9,
-      "price_per_gpu_hour_usd": 2.05,
+      "price_per_gpu_hour_usd": 2.19,
       "certifications": [
         "SOC 2"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://massedcompute.com/"
       ],
-      "notes": "Community favorite for flexible on-demand H100 capacity.",
+      "notes": "Popular community choice for on-demand H100/H200 rentals",
       "data_quality": "high"
     },
     {
@@ -537,17 +551,17 @@
       "website": "https://hyperbolic.xyz",
       "total_gpus": 8500,
       "network_bandwidth_gbps": 800,
-      "interconnect": "200-400GbE",
+      "interconnect": "200\u2013400GbE",
       "sla_uptime_percent": 99.8,
       "price_per_gpu_hour_usd": 1.75,
       "certifications": [],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://hyperbolic.xyz/"
       ],
       "notes": null,
-      "data_quality": "medium"
+      "data_quality": "high"
     },
     {
       "id": "voltage-park",
@@ -565,12 +579,12 @@
       "network_bandwidth_gbps": 3200,
       "interconnect": "NVLink + 400GbE",
       "sla_uptime_percent": 99.95,
-      "price_per_gpu_hour_usd": 1.95,
+      "price_per_gpu_hour_usd": 1.99,
       "certifications": [
         "SOC 2"
       ],
       "availability_status": "Immediate (large dedicated blocks)",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://www.voltagepark.com/"
       ],
@@ -604,12 +618,13 @@
         "PCI DSS"
       ],
       "availability_status": "Immediate (on-demand); faster with reservations",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://aws.amazon.com/ec2/instance-types/p5/",
-        "https://aws.amazon.com/sagemaker/"
+        "https://aws.amazon.com/ec2/pricing/on-demand/",
+        "https://aws.amazon.com/ec2/pricing/on-demand/"
       ],
-      "notes": "List on-demand pricing shown for p5.48xlarge. Committed use / Savings Plans / EC2 Capacity Reservations heavily used for production AI workloads.",
+      "notes": "Hyperscaler. On-demand list pricing shown for p5.48xlarge. Committed use / Savings Plans common for production AI workloads.",
       "data_quality": "high"
     },
     {
@@ -617,9 +632,7 @@
       "provider_name": "Microsoft Azure",
       "layer_type": "GPU Cloud",
       "hardware_architectures": [
-        "NVIDIA H100",
-        "NVIDIA H200",
-        "AMD MI300X"
+        "NVIDIA H100"
       ],
       "cooling_type": "Liquid",
       "jurisdiction_zone": "US-Federal",
@@ -629,7 +642,7 @@
       "network_bandwidth_gbps": 3200,
       "interconnect": "InfiniBand + NVLink",
       "sla_uptime_percent": 99.99,
-      "price_per_gpu_hour_usd": 3.85,
+      "price_per_gpu_hour_usd": 12.29,
       "certifications": [
         "SOC 1/2/3",
         "ISO 27001",
@@ -637,11 +650,12 @@
         "HIPAA"
       ],
       "availability_status": "Immediate (on-demand); capacity reservations recommended",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://azure.microsoft.com/en-us/products/virtual-machines/nd-h100-v5/"
+        "https://azure.microsoft.com/en-us/products/virtual-machines/nd-h100-v5/",
+        "https://prices.azure.com/api/retail/prices?$filter=serviceName eq 'Virtual Machines' and priceType eq 'Consumption' and armRegionName eq 'eastus' and contains(armSkuName,'ND96isr_H100')"
       ],
-      "notes": "ND_H100_v5 series. Strong integration with Azure ML and Fabric.",
+      "notes": "ND H100 v5 series. On-demand list pricing; Spot/Reserved pricing substantially lower. Strong Azure ML integration.",
       "data_quality": "high"
     },
     {
@@ -669,12 +683,13 @@
         "HIPAA"
       ],
       "availability_status": "Immediate (on-demand); committed use discounts common",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://cloud.google.com/compute/docs/accelerator-optimized-machines",
-        "https://cloud.google.com/ai-hypercomputer"
+        "https://cloud.google.com/ai-hypercomputer",
+        "https://cloudpricingcalculator.appspot.com/static/data/pricelist.json"
       ],
-      "notes": "A3 Mega / A3 Ultra (H100/H200) + G2 instances. Excellent for large training with GPUDirect.",
+      "notes": "Hyperscaler. A3 / G2 instances + AI Hypercomputer offerings",
       "data_quality": "high"
     },
     {
@@ -700,11 +715,12 @@
         "FedRAMP"
       ],
       "availability_status": "Immediate (bare metal shapes)",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://www.oracle.com/cloud/compute/gpu/"
+        "https://www.oracle.com/cloud/compute/gpu/",
+        "https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?currencyCode=USD"
       ],
-      "notes": "Competitive bare-metal GPU pricing. Popular for large dedicated clusters.",
+      "notes": "Hyperscaler with competitive bare-metal GPU shapes and strong price/performance positioning",
       "data_quality": "high"
     },
     {
@@ -722,20 +738,22 @@
       "website": "https://www.vultr.com",
       "total_gpus": 12000,
       "network_bandwidth_gbps": 400,
-      "interconnect": "100-400GbE",
+      "interconnect": "100\u2013400GbE",
       "sla_uptime_percent": 99.99,
       "price_per_gpu_hour_usd": 2.25,
       "certifications": [
         "SOC 2",
         "ISO 27001"
       ],
-      "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "availability_status": "Contact for availability",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://www.vultr.com/products/gpu/"
+        "https://www.vultr.com/products/gpu/",
+        "https://www.vultr.com/pricing/",
+        "https://api.vultr.com/v2/plans"
       ],
       "notes": null,
-      "data_quality": "high"
+      "data_quality": "medium"
     },
     {
       "id": "phoenixnap",
@@ -751,7 +769,7 @@
       "website": "https://phoenixnap.com",
       "total_gpus": 4500,
       "network_bandwidth_gbps": 400,
-      "interconnect": "100-200GbE",
+      "interconnect": "100\u2013200GbE",
       "sla_uptime_percent": 99.99,
       "price_per_gpu_hour_usd": 2.15,
       "certifications": [
@@ -760,9 +778,10 @@
         "PCI DSS"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://phoenixnap.com/"
+        "https://phoenixnap.com/",
+        "https://phoenixnap.com/bare-metal-cloud/gpu-servers"
       ],
       "notes": null,
       "data_quality": "high"
@@ -782,19 +801,19 @@
       "website": "https://www.hivelocity.net",
       "total_gpus": 3800,
       "network_bandwidth_gbps": 200,
-      "interconnect": "100-200GbE",
+      "interconnect": "100\u2013200GbE",
       "sla_uptime_percent": 99.99,
       "price_per_gpu_hour_usd": 2.05,
       "certifications": [
         "SOC 2"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://www.hivelocity.net/"
       ],
       "notes": null,
-      "data_quality": "medium"
+      "data_quality": "high"
     },
     {
       "id": "cudo-compute",
@@ -811,16 +830,17 @@
       "website": "https://www.cudocompute.com",
       "total_gpus": 6500,
       "network_bandwidth_gbps": 400,
-      "interconnect": "100-400GbE",
+      "interconnect": "100\u2013400GbE",
       "sla_uptime_percent": 99.9,
       "price_per_gpu_hour_usd": 1.85,
       "certifications": [
         "ISO 27001"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
-        "https://www.cudocompute.com/"
+        "https://www.cudocompute.com/",
+        "https://rest.compute.cudo.org/v1/virtual-machines/machine-types"
       ],
       "notes": null,
       "data_quality": "medium"
@@ -842,16 +862,16 @@
       "network_bandwidth_gbps": 1600,
       "interconnect": "NVLink + 400GbE",
       "sla_uptime_percent": 99.95,
-      "price_per_gpu_hour_usd": 2.4,
+      "price_per_gpu_hour_usd": 5.49,
       "certifications": [
         "SOC 2"
       ],
       "availability_status": "Immediate",
-      "last_verified": "2026-05-31",
+      "last_verified": "2026-06-08",
       "source_urls": [
         "https://www.together.ai/"
       ],
-      "notes": "Inference-first platform with substantial training capacity available.",
+      "notes": "Inference-first platform with substantial training/inference GPU capacity",
       "data_quality": "high"
     }
   ]

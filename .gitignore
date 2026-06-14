@@ -82,6 +82,7 @@ generated/
 # --- Logs & Local State ---
 *.log
 logs/
+data-pipeline/output.txt
 *.pid
 *.seed
 *.pid.lock

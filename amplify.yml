@@ -1,0 +1,13 @@
+version: 1
+frontend:
+  phases:
+    build:
+      commands: []
+  artifacts:
+    # Publish the contents of website/ (the directory tool) so its
+    # index.html is served at the site root.
+    baseDirectory: website
+    files:
+      - '**/*'
+  cache:
+    paths: []

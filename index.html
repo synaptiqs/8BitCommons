@@ -42,11 +42,17 @@
     </div>
   </nav>
 
+  <!-- DIRECTORY LAUNCHING SOON BANNER (shown only while !DIRECTORY_LIVE) -->
+  <div id="launching-soon-banner" style="background: linear-gradient(90deg, #1e40af, #3b82f6); color: white; text-align: center; padding: 10px 16px; font-size: 0.95rem; display: none;">
+    <strong>🚀 Directory Launching Soon</strong> — deploying to AWS Amplify (static hosting).
+    <button onclick="showWaitlistModal()" style="margin-left:12px; background:white; color:#1e40af; border:none; padding:4px 14px; border-radius:9999px; font-size:0.85rem; font-weight:600; cursor:pointer;">Join the Waitlist</button>
+  </div>
+
   <!-- HERO -->
   <div class="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs tracking-widest mb-6">
       <i class="fa-solid fa-check text-emerald-400"></i>
-      <span class="text-slate-400">Data verified May 2026 • 29 real providers</span>
+      <span class="text-slate-400">Data verified Jun 2026 • 29 real providers</span>
     </div>
 
     <h1 class="text-5xl md:text-6xl font-semibold tracking-tighter leading-none mb-6">
@@ -70,7 +76,7 @@
     </div>
 
     <div class="mt-6 text-sm text-slate-500">
-      No login required • Free to use • AI features powered by open models
+      Free access — enter your email once. No password. No lock-in.
     </div>
   </div>
 
@@ -160,7 +166,7 @@
         <i class="fa-solid fa-arrow-right ml-2"></i>
       </a>
       <div class="text-xs text-slate-500 mt-6 max-w-md mx-auto">
-        No login required. Start comparing real providers in seconds. AI features are powered by open models.
+        Free access — enter your email once. 29 live providers, real pricing, AI-powered comparison. No lock-in.
       </div>
     </div>
   </div>
@@ -213,32 +219,73 @@
   </footer>
 
   <script>
-    // ── DIRECTORY LAUNCH STATE ──────────────────────────────────────────────
-    // Flip to true and redeploy once directory.flopsource.com is live.
+    // ── DIRECTORY ACCESS GATE ───────────────────────────────────────────────
+    // Returning users (email already in localStorage) bypass the modal.
+    // Set DIRECTORY_LIVE = true once the AWS S3 + CloudFront distribution
+    // for directory.flopsource.com is live and DNS is pointed.
     const DIRECTORY_LIVE = false;
-    const DIRECTORY_URL  = 'https://directory.flopsource.com';
 
-    if (DIRECTORY_LIVE) {
-      document.querySelectorAll('[data-directory-link]').forEach(a => a.href = DIRECTORY_URL);
-    } else {
-      // Directory not yet live — intercept clicks and capture email instead.
-      document.querySelectorAll('[data-directory-link]').forEach(a => {
-        a.removeAttribute('href');
-        a.style.cursor = 'pointer';
-        a.addEventListener('click', e => { e.preventDefault(); showEarlyAccessModal(); });
+    // Smart directory URL for local testing vs production:
+    // - On localhost (your local serve.bat on port 5500), links go to the local website/ app so you can test the full flow.
+    // - Otherwise, uses the deployed version from AWS Amplify.
+    // Since CloudFront requires account verification, we're using Amplify Hosting for the directory app (easier custom domains with external registrars like Bluehost).
+    // Deploy the contents of the `website/` folder to an Amplify app.
+    // Once set up, update REMOTE_DIRECTORY_URL below to your Amplify domain (e.g. https://<id>.amplifyapp.com or your custom https://directory.flopsource.com).
+    const IS_LOCAL = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+    const LOCAL_DIRECTORY_URL = location.origin + '/website/';
+    const REMOTE_DIRECTORY_URL = 'https://YOUR_AMPLIFY_APP_ID.amplifyapp.com';  // <-- Replace with your actual Amplify URL after deploy
+
+    const DIRECTORY_URL = IS_LOCAL ? LOCAL_DIRECTORY_URL : REMOTE_DIRECTORY_URL;
+
+    const LEAD_EMAIL_KEY = 'flopsource_lead_email'; // shared with lead-gate.js in the directory app
+
+    function hasStoredEmail() {
+      try { return !!localStorage.getItem(LEAD_EMAIL_KEY); } catch(e) { return false; }
+    }
+
+    function goToDirectory() {
+      if (DIRECTORY_LIVE) {
+        window.open(DIRECTORY_URL, '_blank', 'noopener');
+      } else {
+        showDirectoryComingSoon();
+      }
+    }
+
+    function openDirectory() {
+      if (hasStoredEmail()) { goToDirectory(); return; }
+      showDirectoryAccessModal();
+    }
+
+    document.querySelectorAll('[data-directory-link]').forEach(a => {
+      a.addEventListener('click', e => { e.preventDefault(); openDirectory(); });
+    });
+
+    // Make static hrefs match the smart DIRECTORY_URL (good for no-JS, SEO, middle-click, etc.)
+    document.querySelectorAll('[data-directory-link]').forEach(a => {
+      a.href = DIRECTORY_URL;
+    });
+
+    // While the directory is not yet live on AWS, tweak CTA text to set expectations
+    if (!DIRECTORY_LIVE) {
+      document.querySelectorAll('[data-directory-link]').forEach(el => {
+        const txt = el.textContent || '';
+        if (txt.includes('Browse the Directory')) {
+          el.textContent = 'Get Early Directory Access';
+        } else if (txt.includes('Open the Directory')) {
+          el.innerHTML = 'Get Early Access — Free <i class="fa-solid fa-arrow-right ml-2"></i>';
+        }
       });
     }
 
-    function showEarlyAccessModal() {
-      if (document.getElementById('fs-early-access-overlay')) return;
+    function showDirectoryAccessModal() {
+      if (document.getElementById('fs-access-overlay')) return;
 
       const overlay = document.createElement('div');
-      overlay.id = 'fs-early-access-overlay';
+      overlay.id = 'fs-access-overlay';
       overlay.style.cssText = 'position:fixed;inset:0;background:rgba(2,6,23,0.75);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;backdrop-filter:blur(4px);';
 
       overlay.innerHTML = `
         <div style="background:#0f172a;border:1px solid #1e293b;border-radius:20px;max-width:420px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.5);overflow:hidden;font-family:system-ui,-apple-system,sans-serif;">
-          <!-- Header -->
           <div style="padding:20px 22px 16px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;">
             <div style="display:flex;align-items:center;gap:10px;">
               <svg width="24" height="24" viewBox="0 0 28 28" role="img" aria-label="FlopSource">
@@ -254,20 +301,18 @@
             </div>
             <button id="fs-modal-close" style="background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;padding:2px 6px;line-height:1;border-radius:6px;" aria-label="Close">×</button>
           </div>
-          <!-- Body -->
-          <div id="fs-modal-body" style="padding:24px 24px 8px;">
-            <p style="font-size:1.05rem;font-weight:600;color:#f1f5f9;margin:0 0 6px;">Launching soon — get first access.</p>
-            <p style="font-size:0.85rem;color:#94a3b8;margin:0 0 18px;line-height:1.5;">The FlopSource directory is in final testing. Drop your work email and we'll notify you the moment it goes live.</p>
+          <div style="padding:24px 24px 8px;">
+            <p style="font-size:1.05rem;font-weight:600;color:#f1f5f9;margin:0 0 6px;">Free access — just your email.</p>
+            <p style="font-size:0.85rem;color:#94a3b8;margin:0 0 18px;line-height:1.5;">29 real providers. Live pricing. AI-powered comparison.<br>${DIRECTORY_LIVE ? "Enter your work email once and you're in — no password, no friction." : "Enter your email to get notified the moment the directory goes live on AWS."}</p>
             <input id="fs-modal-email" type="email" placeholder="you@company.com" autocomplete="email"
               style="width:100%;padding:11px 14px;font-size:0.9rem;border:1px solid #334155;border-radius:10px;background:#1e293b;color:#f1f5f9;outline:none;box-sizing:border-box;"/>
             <div id="fs-modal-error" style="font-size:0.75rem;color:#f87171;margin-top:6px;min-height:1em;display:none;"></div>
           </div>
-          <!-- Footer -->
           <div style="padding:14px 24px 20px;display:flex;flex-direction:column;gap:10px;">
             <button id="fs-modal-submit" style="width:100%;padding:11px;background:#0ea5e9;color:#fff;font-size:0.9rem;font-weight:600;border:none;border-radius:10px;cursor:pointer;transition:background 0.15s;">
-              Notify Me When It's Live
+              ${DIRECTORY_LIVE ? 'Open the Directory →' : 'Get Early Access →'}
             </button>
-            <p style="font-size:0.68rem;color:#475569;margin:0;text-align:center;">No spam. One email when we launch.</p>
+            <p style="font-size:0.68rem;color:#475569;margin:0;text-align:center;">No spam. Occasional high-signal updates on the AI compute market.</p>
           </div>
         </div>
       `;
@@ -278,7 +323,6 @@
       const submitBtn  = overlay.querySelector('#fs-modal-submit');
       const errorEl    = overlay.querySelector('#fs-modal-error');
       const closeBtn   = overlay.querySelector('#fs-modal-close');
-      const body       = overlay.querySelector('#fs-modal-body');
 
       const close = () => overlay.remove();
       closeBtn.addEventListener('click', close);
@@ -292,7 +336,7 @@
 
       setTimeout(() => emailInput.focus(), 60);
 
-      async function submit() {
+      function submit() {
         const val = emailInput.value.trim();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
           errorEl.textContent = 'Please enter a valid email address.';
@@ -304,36 +348,138 @@
         errorEl.style.display = 'none';
         emailInput.style.borderColor = '#334155';
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Saving…';
+        submitBtn.textContent = 'Opening…';
+
+        // Persist email — same key read by lead-gate.js in the directory app,
+        // so returning visitors skip this modal when going directly to the directory.
+        try { localStorage.setItem(LEAD_EMAIL_KEY, val.toLowerCase()); } catch(e) {}
 
         // Fire-and-forget to Cloudflare Worker
         fetch('https://flopsourceadvisor.synaptiqs.workers.dev/lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: val.toLowerCase(), source: 'landing-waitlist', ts: Date.now() })
+          body: JSON.stringify({ email: val.toLowerCase(), source: 'directory-gate', ts: Date.now() })
         }).catch(() => {});
 
-        // Success state
-        body.innerHTML = `
-          <div style="text-align:center;padding:8px 0 16px;">
-            <div style="width:48px;height:48px;background:#0c2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </div>
-            <p style="font-size:1rem;font-weight:600;color:#f1f5f9;margin:0 0 6px;">You're on the list.</p>
-            <p style="font-size:0.83rem;color:#94a3b8;margin:0;line-height:1.5;">We'll email <strong style="color:#cbd5e1;">${val.toLowerCase()}</strong> the moment the directory goes live.</p>
-          </div>
-        `;
-        overlay.querySelector('div[style*="padding:14px"]').innerHTML = `
-          <button id="fs-modal-done" style="width:100%;padding:11px;background:#1e293b;color:#94a3b8;font-size:0.9rem;font-weight:500;border:1px solid #334155;border-radius:10px;cursor:pointer;">Close</button>
-        `;
-        overlay.querySelector('#fs-modal-done').addEventListener('click', close);
+        setTimeout(() => { close(); goToDirectory(); }, 280);
       }
 
       submitBtn.addEventListener('click', submit);
       emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
     }
+
+    function showDirectoryComingSoon() {
+      // Non-intrusive feedback after email capture when the directory is not yet live on AWS.
+      const toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;bottom:24px;right:24px;max-width:340px;background:#0f172a;color:#f1f5f9;padding:16px 18px;border:1px solid #1e293b;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,0.35);z-index:99999;font-size:0.9rem;line-height:1.4;';
+      toast.innerHTML = `
+        <div style="font-weight:600;margin-bottom:4px;">Thank you — email captured!</div>
+        <div style="color:#94a3b8;font-size:0.82rem;">
+          The directory is deploying to AWS Amplify at <strong>${DIRECTORY_URL}</strong>.<br>
+          You'll get access as soon as it's live. No spam.
+        </div>
+        <button style="margin-top:10px;background:#0ea5e9;color:#fff;border:none;padding:5px 12px;border-radius:8px;font-size:0.8rem;cursor:pointer;">Dismiss</button>
+      `;
+      document.body.appendChild(toast);
+
+      const dismiss = () => { if (toast.parentNode) toast.parentNode.removeChild(toast); };
+      toast.querySelector('button').addEventListener('click', dismiss);
+      // Auto-dismiss after 12s
+      setTimeout(dismiss, 12000);
+    }
+
+    function showWaitlistModal() {
+      if (document.getElementById('fs-waitlist-overlay')) return;
+
+      const overlay = document.createElement('div');
+      overlay.id = 'fs-waitlist-overlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(2,6,23,0.75);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;backdrop-filter:blur(4px);';
+
+      overlay.innerHTML = `
+        <div style="background:#0f172a;border:1px solid #1e293b;border-radius:20px;max-width:420px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.5);overflow:hidden;font-family:system-ui,-apple-system,sans-serif;">
+          <div style="padding:20px 22px 16px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-weight:600;font-size:0.95rem;color:#f1f5f9;">Join the FlopSource Waitlist</span>
+            </div>
+            <button id="fs-waitlist-close" style="background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;padding:2px 6px;line-height:1;border-radius:6px;" aria-label="Close">×</button>
+          </div>
+          <div style="padding:24px 24px 8px;">
+            <p style="font-size:1.0rem;font-weight:600;color:#f1f5f9;margin:0 0 6px;">Get notified when the directory launches.</p>
+            <p style="font-size:0.85rem;color:#94a3b8;margin:0 0 18px;line-height:1.5;">Be among the first to access 29 real providers, AI comparisons, and live data on AWS.</p>
+            <input id="fs-waitlist-email" type="email" placeholder="you@company.com" autocomplete="email"
+              style="width:100%;padding:11px 14px;font-size:0.9rem;border:1px solid #334155;border-radius:10px;background:#1e293b;color:#f1f5f9;outline:none;box-sizing:border-box;"/>
+            <div id="fs-waitlist-error" style="font-size:0.75rem;color:#f87171;margin-top:6px;min-height:1em;display:none;"></div>
+          </div>
+          <div style="padding:14px 24px 20px;display:flex;flex-direction:column;gap:10px;">
+            <button id="fs-waitlist-submit" style="width:100%;padding:11px;background:#0ea5e9;color:#fff;font-size:0.9rem;font-weight:600;border:none;border-radius:10px;cursor:pointer;transition:background 0.15s;">
+              Join Waitlist →
+            </button>
+            <p style="font-size:0.68rem;color:#475569;margin:0;text-align:center;">We'll only email you about the directory launch and high-signal AI infrastructure updates.</p>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      const emailInput = overlay.querySelector('#fs-waitlist-email');
+      const submitBtn  = overlay.querySelector('#fs-waitlist-submit');
+      const errorEl    = overlay.querySelector('#fs-waitlist-error');
+      const closeBtn   = overlay.querySelector('#fs-waitlist-close');
+
+      const close = () => overlay.remove();
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', function esc(e) {
+        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+      });
+
+      setTimeout(() => emailInput.focus(), 60);
+
+      submitBtn.addEventListener('click', () => {
+        const val = emailInput.value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+          errorEl.textContent = 'Please enter a valid email address.';
+          errorEl.style.display = 'block';
+          emailInput.style.borderColor = '#f87171';
+          emailInput.focus();
+          return;
+        }
+        errorEl.style.display = 'none';
+        emailInput.style.borderColor = '#334155';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Joining…';
+
+        // Capture as waitlist lead
+        try { localStorage.setItem(LEAD_EMAIL_KEY, val.toLowerCase()); } catch(e) {}
+        fetch('https://flopsourceadvisor.synaptiqs.workers.dev/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: val.toLowerCase(), source: 'waitlist', ts: Date.now() })
+        }).catch(() => {});
+
+        setTimeout(() => {
+          close();
+          const thanks = document.createElement('div');
+          thanks.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#0f172a;color:#f1f5f9;padding:14px 18px;border-radius:12px;border:1px solid #1e293b;box-shadow:0 10px 30px rgba(0,0,0,0.3);z-index:99999;';
+          thanks.textContent = 'Thank you! You\'re on the waitlist. We\'ll notify you when the directory launches.';
+          document.body.appendChild(thanks);
+          setTimeout(() => { if (thanks.parentNode) thanks.parentNode.removeChild(thanks); }, 6000);
+        }, 300);
+      });
+
+      emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitBtn.click(); });
+    }
+
+    // Show launching soon banner + adjust CTAs while directory is not live
+    if (!DIRECTORY_LIVE) {
+      const banner = document.getElementById('launching-soon-banner');
+      if (banner) banner.style.display = 'block';
+
+      // The directory CTAs still run the email gate (for future access), waitlist is additional
+    }
+
+    // Optional: log for debugging local directory testing
+    console.log('[FlopSource Landing] DIRECTORY_LIVE=', DIRECTORY_LIVE, 'IS_LOCAL=', IS_LOCAL, 'DIRECTORY_URL=', DIRECTORY_URL);
 
     // Self-contained large number formatter for the landing page
     function formatLargeNumber(num, decimals = 1) {
@@ -365,7 +511,7 @@
     // Load and display real GPU count from the directory data
     (async function loadLandingStats() {
       try {
-        const res = await fetch('website/data/data_centers.json', { cache: 'no-store' });
+        const res = await fetch(DIRECTORY_URL + '/data/data_centers.json', { cache: 'no-store' });
         if (!res.ok) throw new Error('Failed to load data');
         const data = await res.json();
         const providers = Array.isArray(data) ? data : (data.providers || []);

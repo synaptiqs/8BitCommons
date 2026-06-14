@@ -42,6 +42,18 @@ const Components = (() => {
     return `<span class="qdot ${dotClass}"></span><span style="font-size:0.68rem; color:var(--text-secondary);">${label}</span>`;
   }
 
+  function freshnessTag(quality, lastVerified) {
+    if (quality === 'high') {
+      return `<span class="freshness-live" title="Price scraped live from provider source this run"><span class="live-dot"></span>Live</span>`;
+    }
+    let dateStr = 'Unknown';
+    if (lastVerified) {
+      const d = new Date(lastVerified + 'T00:00:00');
+      dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+    return `<span class="freshness-dated" title="Fallback data — provider verified active but price is from research"><i class="fa-regular fa-clock" style="font-size:0.55rem; opacity:0.55;"></i>${escapeHTML(dateStr)}</span>`;
+  }
+
   // ─────────────────────────────────────────────────
   // PROVIDER CARD
   // ─────────────────────────────────────────────────
@@ -136,7 +148,7 @@ const Components = (() => {
       <div style="display:flex; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border);">
         <div style="font-size:0.8rem; font-weight:600; color:var(--text-primary); font-variant-numeric:tabular-nums;">${price}</div>
         <div style="display:flex; align-items:center; gap:8px;">
-          <div style="display:flex; align-items:center; gap:4px;">${qualityHTML(provider.data_quality || 'medium')}</div>
+          <div style="display:flex; align-items:center; gap:4px;">${freshnessTag(provider.data_quality, provider.last_verified)}</div>
 
           <!-- Compare toggle -->
           <button class="compare-btn" data-id="${provider.id}" 
@@ -222,8 +234,6 @@ const Components = (() => {
       : `<span style="font-size:0.78rem; color:var(--text-secondary);">None listed</span>`;
 
     const quality = provider.data_quality || 'medium';
-    const qdClass = { high: 'q-high', medium: 'q-medium', low: 'q-low' }[quality] || 'q-low';
-    const qualityLabel = quality.charAt(0).toUpperCase() + quality.slice(1);
 
     let verifiedText = 'Unknown';
     if (provider.last_verified) {
@@ -298,12 +308,11 @@ const Components = (() => {
       <div style="background:var(--bg-inner); border:1px solid var(--border); border-radius:10px; padding:12px 14px;">
         <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:${provider.notes ? '8px' : '0'};">
           <div style="display:flex; align-items:center; gap:6px;">
-            <span style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); font-weight:600;">Data Quality</span>
-            <span class="qdot ${qdClass}"></span>
-            <span style="font-size:0.72rem; color:var(--text-secondary);">${qualityLabel}</span>
+            <span style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); font-weight:600;">Price data</span>
+            ${freshnessTag(quality, provider.last_verified)}
           </div>
           <div style="font-size:0.72rem; color:var(--text-secondary);">
-            <span style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:600; margin-right:4px; opacity:0.6;">Verified</span>${verifiedText}
+            <span style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:600; margin-right:4px; opacity:0.6;">Last pulled</span>${verifiedText}
           </div>
         </div>
         ${provider.notes ? `<div style="font-size:0.72rem; color:var(--text-secondary); font-style:italic; padding:8px 0; border-top:1px solid var(--border);">"${provider.notes}"</div>` : ''}
